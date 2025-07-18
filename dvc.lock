@@ -1,0 +1,147 @@
+schema: '2.0'
+stages:
+  data-download:
+    cmd: python src/get_data.py --config params.yaml
+    deps:
+    - path: src/get_data.py
+      hash: md5
+      md5: 932382f5a7afa48db5648dc94c724805
+      size: 2122
+    params:
+      params.yaml:
+        data.task_1_dataset_name: mbpp
+        data.task_1_dataset_path: data/raw/task_1_data.csv
+        data.task_2_dataset_language: python
+        data.task_2_dataset_name: google/code_x_glue_ct_code_to_text
+        data.task_2_dataset_path: data/raw/task_2_data.csv
+    outs:
+    - path: data/raw/task_1_data.csv
+      hash: md5
+      md5: 605e2a080dd11d614289e9a8d5aff92c
+      size: 255672
+    - path: data/raw/task_2_data.csv
+      hash: md5
+      md5: 48083e081b9bfac74d0f21fa32edb82b
+      size: 890876
+  data-process:
+    cmd: python src/preprocess_data.py --config params.yaml
+    deps:
+    - path: data/raw/task_1_data.csv
+      hash: md5
+      md5: 605e2a080dd11d614289e9a8d5aff92c
+      size: 255672
+    - path: data/raw/task_2_data.csv
+      hash: md5
+      md5: 48083e081b9bfac74d0f21fa32edb82b
+      size: 890876
+    - path: src/preprocess_data.py
+      hash: md5
+      md5: 6cf43f14419d0e8979625ec226d7ab6f
+      size: 3933
+    params:
+      params.yaml:
+        data.task_1_dataset_path: data/raw/task_1_data.csv
+        data.task_1_dataset_processed_path: data/processed/task_1_data_processed_hf
+        data.task_2_dataset_path: data/raw/task_2_data.csv
+        data.task_2_dataset_processed_path: data/processed/task_2_data_processed_hf
+        training.base_model: microsoft/Phi-3-mini-4k-instruct
+    outs:
+    - path: data/processed/task_1_data_processed_hf
+      hash: md5
+      md5: 06f068b20c54dae68689b94027527a3b.dir
+      size: 12784562
+      nfiles: 3
+    - path: data/processed/task_2_data_processed_hf
+      hash: md5
+      md5: be6adcad1d73ad5179f58a337a351033.dir
+      size: 20221922
+      nfiles: 3
+  data-split:
+    cmd: python src/split_data.py --config params.yaml
+    deps:
+    - path: data/processed/task_1_data_processed_hf
+      hash: md5
+      md5: c519c446fc349569ce0b68d6aac7a9f5.dir
+      size: 12793170
+      nfiles: 5
+    - path: data/processed/task_2_data_processed_hf
+      hash: md5
+      md5: 0ff1f252f6438b7ce58b9180fedb45f4.dir
+      size: 20230818
+      nfiles: 5
+    - path: src/split_data.py
+      hash: md5
+      md5: ea98a65753a16c044ce20a24d24110d8
+      size: 1684
+    params:
+      params.yaml:
+        data.task_1_dataset_processed_path: data/processed/task_1_data_processed_hf
+        data.task_1_split: 0.8
+        data.task_1_train_path: data/split/task_1_train_data_hf
+        data.task_1_val_path: data/split/task_1_val_data_hf
+        data.task_2_dataset_processed_path: data/processed/task_2_data_processed_hf
+        data.task_2_split: 0.8
+        data.task_2_train_path: data/split/task_2_train_data_hf
+        data.task_2_val_path: data/split/task_2_val_data_hf
+    outs:
+    - path: data/split/task_1_train_data_hf
+      hash: md5
+      md5: aabb75a6a84179977549acdc62a13091.dir
+      size: 10225370
+      nfiles: 3
+    - path: data/split/task_1_val_data_hf
+      hash: md5
+      md5: 8b0883d5ce17224382fdf37e8be005cc.dir
+      size: 2561090
+      nfiles: 3
+    - path: data/split/task_2_train_data_hf
+      hash: md5
+      md5: 87c796ee465d1a32be960296faf4693b.dir
+      size: 16177922
+      nfiles: 3
+    - path: data/split/task_2_val_data_hf
+      hash: md5
+      md5: 460d89c6335e9dddb06e7995ac5a7681.dir
+      size: 4045922
+      nfiles: 3
+  train:
+    cmd: python src/training.py --config params.yaml
+    deps:
+    - path: data/split/task_1_train_data_hf
+      hash: md5
+      md5: aabb75a6a84179977549acdc62a13091.dir
+      size: 10225370
+      nfiles: 3
+    - path: data/split/task_1_val_data_hf
+      hash: md5
+      md5: 8b0883d5ce17224382fdf37e8be005cc.dir
+      size: 2561090
+      nfiles: 3
+    - path: data/split/task_2_train_data_hf
+      hash: md5
+      md5: 87c796ee465d1a32be960296faf4693b.dir
+      size: 16177922
+      nfiles: 3
+    - path: data/split/task_2_val_data_hf
+      hash: md5
+      md5: 460d89c6335e9dddb06e7995ac5a7681.dir
+      size: 4045922
+      nfiles: 3
+    - path: src/training.py
+      hash: md5
+      md5: c141c6a4fb05c868c0676e361764b1ce
+      size: 5049
+    params:
+      params.yaml:
+        data.task_1_train_path: data/split/task_1_train_data_hf
+        data.task_1_val_path: data/split/task_1_val_data_hf
+        data.task_2_train_path: data/split/task_2_train_data_hf
+        data.task_2_val_path: data/split/task_2_val_data_hf
+        training.base_model: microsoft/Phi-3-mini-4k-instruct
+        training.task_1_target_modules: qkv_proj,o_proj
+        training.task_2_target_modules: gate_up_proj,down_proj
+    outs:
+    - path: training_completion_time.txt
+      hash: md5
+      md5: 19a44db75290002cfbb99b3f0294c1f7
+      size: 18

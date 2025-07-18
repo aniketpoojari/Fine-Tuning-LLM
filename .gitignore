@@ -1,0 +1,6 @@
+data/processed/*
+data/raw/*
+data/split/*
+saved_models/adapters/task_1/*
+saved_models/adapters/task_2/*
+/training_completion_time.txt

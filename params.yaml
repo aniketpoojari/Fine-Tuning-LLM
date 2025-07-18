@@ -1,0 +1,19 @@
+data:
+  task_1_dataset_name: mbpp
+  task_1_dataset_path: data/raw/task_1_data.csv
+  task_1_dataset_processed_path: data/processed/task_1_data_processed_hf
+  task_1_split: 0.8
+  task_1_train_path: data/split/task_1_train_data_hf
+  task_1_val_path: data/split/task_1_val_data_hf
+  task_2_dataset_name: google/code_x_glue_ct_code_to_text
+  task_2_dataset_language: python
+  task_2_dataset_path: data/raw/task_2_data.csv
+  task_2_dataset_processed_path: data/processed/task_2_data_processed_hf
+  task_2_split: 0.8
+  task_2_train_path: data/split/task_2_train_data_hf
+  task_2_val_path: data/split/task_2_val_data_hf
+
+training:
+  base_model: microsoft/Phi-3-mini-4k-instruct
+  task_1_target_modules: qkv_proj,o_proj
+  task_2_target_modules: gate_up_proj,down_proj

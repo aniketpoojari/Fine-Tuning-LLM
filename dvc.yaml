@@ -1,0 +1,70 @@
+stages:
+  data-download:
+    cmd: python src/get_data.py --config params.yaml
+    deps:
+      - src/get_data.py
+    params:
+      - data.task_1_dataset_name
+      - data.task_1_dataset_path
+      - data.task_2_dataset_name
+      - data.task_2_dataset_language
+      - data.task_2_dataset_path
+    outs:
+      - data/raw/task_1_data.csv
+      - data/raw/task_2_data.csv
+
+  data-process:
+    cmd: python src/preprocess_data.py --config params.yaml
+    deps:
+      - src/preprocess_data.py
+      - data/raw/task_1_data.csv
+      - data/raw/task_2_data.csv
+    params:
+      - data.task_1_dataset_path
+      - data.task_2_dataset_path
+      - training.base_model
+      - data.task_1_dataset_processed_path
+      - data.task_2_dataset_processed_path
+    outs:
+      - data/processed/task_1_data_processed_hf
+      - data/processed/task_2_data_processed_hf
+
+  data-split:
+    cmd: python src/split_data.py --config params.yaml
+    deps:
+      - src/split_data.py
+      - data/processed/task_1_data_processed_hf
+      - data/processed/task_2_data_processed_hf
+    params:
+      - data.task_1_dataset_processed_path
+      - data.task_2_dataset_processed_path
+      - data.task_1_split
+      - data.task_1_train_path
+      - data.task_1_val_path
+      - data.task_2_split
+      - data.task_2_train_path
+      - data.task_2_val_path
+    outs:
+      - data/split/task_1_train_data_hf
+      - data/split/task_1_val_data_hf
+      - data/split/task_2_train_data_hf
+      - data/split/task_2_val_data_hf
+
+  train:
+    cmd: python src/training.py --config params.yaml
+    deps:
+      - src/training.py
+      - data/split/task_1_train_data_hf
+      - data/split/task_1_val_data_hf
+      - data/split/task_2_train_data_hf
+      - data/split/task_2_val_data_hf
+    params:
+      - data.task_1_train_path
+      - data.task_1_val_path
+      - data.task_2_train_path
+      - data.task_2_val_path
+      - training.base_model
+      - training.task_1_target_modules
+      - training.task_2_target_modules
+    outs:
+      - training_completion_time.txt
