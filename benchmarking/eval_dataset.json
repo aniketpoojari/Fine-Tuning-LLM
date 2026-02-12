@@ -1,0 +1,188 @@
+[
+  {
+    "id": 1,
+    "task": "code_generation",
+    "prompt": "Write a function to find the sum of all even numbers in a given list.",
+    "function_name": "sum_even",
+    "reference_code": "def sum_even(lst):\n    return sum(x for x in lst if x % 2 == 0)",
+    "test_cases": [
+      {"input": [[1, 2, 3, 4, 5, 6]], "expected": 12},
+      {"input": [[1, 3, 5]], "expected": 0},
+      {"input": [[]], "expected": 0},
+      {"input": [[2, 4, 6]], "expected": 12}
+    ]
+  },
+  {
+    "id": 2,
+    "task": "code_generation",
+    "prompt": "Write a function to check whether two given strings are anagrams of each other, ignoring case.",
+    "function_name": "is_anagram",
+    "reference_code": "def is_anagram(s1, s2):\n    return sorted(s1.lower()) == sorted(s2.lower())",
+    "test_cases": [
+      {"input": ["listen", "silent"], "expected": true},
+      {"input": ["hello", "world"], "expected": false},
+      {"input": ["", ""], "expected": true},
+      {"input": ["Triangle", "Integral"], "expected": true}
+    ]
+  },
+  {
+    "id": 3,
+    "task": "code_generation",
+    "prompt": "Write a function to find the second largest unique value in a given list of integers.",
+    "function_name": "second_largest",
+    "reference_code": "def second_largest(lst):\n    unique = sorted(set(lst), reverse=True)\n    return unique[1] if len(unique) >= 2 else None",
+    "test_cases": [
+      {"input": [[1, 2, 3, 4, 5]], "expected": 4},
+      {"input": [[5, 5, 4, 3]], "expected": 4},
+      {"input": [[10, 20]], "expected": 10}
+    ]
+  },
+  {
+    "id": 4,
+    "task": "code_generation",
+    "prompt": "Write a function to count the number of words in a given string.",
+    "function_name": "count_words",
+    "reference_code": "def count_words(s):\n    return len(s.split())",
+    "test_cases": [
+      {"input": ["hello world"], "expected": 2},
+      {"input": ["one"], "expected": 1},
+      {"input": ["  hello   world  "], "expected": 2},
+      {"input": [""], "expected": 0}
+    ]
+  },
+  {
+    "id": 5,
+    "task": "code_generation",
+    "prompt": "Write a function to check whether a given non-negative integer is a perfect square.",
+    "function_name": "is_perfect_square",
+    "reference_code": "def is_perfect_square(n):\n    if n < 0:\n        return False\n    root = int(n ** 0.5)\n    return root * root == n",
+    "test_cases": [
+      {"input": [16], "expected": true},
+      {"input": [15], "expected": false},
+      {"input": [0], "expected": true},
+      {"input": [1], "expected": true}
+    ]
+  },
+  {
+    "id": 6,
+    "task": "code_generation",
+    "prompt": "Write a function to rotate a given list to the right by k positions.",
+    "function_name": "rotate_list",
+    "reference_code": "def rotate_list(lst, k):\n    if not lst:\n        return lst\n    k = k % len(lst)\n    return lst[-k:] + lst[:-k] if k else lst[:]",
+    "test_cases": [
+      {"input": [[1, 2, 3, 4, 5], 2], "expected": [4, 5, 1, 2, 3]},
+      {"input": [[1, 2, 3], 1], "expected": [3, 1, 2]},
+      {"input": [[1, 2, 3, 4, 5], 0], "expected": [1, 2, 3, 4, 5]}
+    ]
+  },
+  {
+    "id": 7,
+    "task": "code_generation",
+    "prompt": "Write a function to find the common elements between two lists without duplicates, returned in sorted order.",
+    "function_name": "common_elements",
+    "reference_code": "def common_elements(lst1, lst2):\n    return sorted(set(lst1) & set(lst2))",
+    "test_cases": [
+      {"input": [[1, 2, 3, 4], [3, 4, 5, 6]], "expected": [3, 4]},
+      {"input": [[1, 2], [3, 4]], "expected": []},
+      {"input": [[], [1, 2]], "expected": []}
+    ]
+  },
+  {
+    "id": 8,
+    "task": "code_generation",
+    "prompt": "Write a function to convert a non-negative integer to its binary string representation.",
+    "function_name": "to_binary",
+    "reference_code": "def to_binary(n):\n    if n == 0:\n        return '0'\n    return bin(n)[2:]",
+    "test_cases": [
+      {"input": [10], "expected": "1010"},
+      {"input": [0], "expected": "0"},
+      {"input": [1], "expected": "1"},
+      {"input": [255], "expected": "11111111"}
+    ]
+  },
+  {
+    "id": 9,
+    "task": "code_generation",
+    "prompt": "Write a function to remove all vowels from a given string.",
+    "function_name": "remove_vowels",
+    "reference_code": "def remove_vowels(s):\n    return ''.join(c for c in s if c.lower() not in 'aeiou')",
+    "test_cases": [
+      {"input": ["hello"], "expected": "hll"},
+      {"input": ["AEIOU"], "expected": ""},
+      {"input": ["python"], "expected": "pythn"},
+      {"input": [""], "expected": ""}
+    ]
+  },
+  {
+    "id": 10,
+    "task": "code_generation",
+    "prompt": "Write a function to find the longest word in a given sentence string.",
+    "function_name": "longest_word",
+    "reference_code": "def longest_word(s):\n    words = s.split()\n    return max(words, key=len) if words else ''",
+    "test_cases": [
+      {"input": ["the quick brown fox"], "expected": "quick"},
+      {"input": ["hello"], "expected": "hello"},
+      {"input": ["I am fine"], "expected": "fine"}
+    ]
+  },
+  {
+    "id": 11,
+    "task": "docstring_generation",
+    "code": "def binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1",
+    "reference_docstring": "Search for a target value in a sorted array using binary search. Returns the index of the target if found, otherwise returns -1."
+  },
+  {
+    "id": 12,
+    "task": "docstring_generation",
+    "code": "def calculate_bmi(weight_kg, height_m):\n    if height_m <= 0:\n        raise ValueError(\"Height must be positive\")\n    bmi = weight_kg / (height_m ** 2)\n    if bmi < 18.5:\n        return bmi, \"underweight\"\n    elif bmi < 25:\n        return bmi, \"normal\"\n    elif bmi < 30:\n        return bmi, \"overweight\"\n    return bmi, \"obese\"",
+    "reference_docstring": "Calculate Body Mass Index from weight in kilograms and height in meters. Returns a tuple of the BMI value and a category string: underweight, normal, overweight, or obese. Raises ValueError if height is not positive."
+  },
+  {
+    "id": 13,
+    "task": "docstring_generation",
+    "code": "def find_prime_factors(n):\n    factors = []\n    d = 2\n    while d * d <= n:\n        while n % d == 0:\n            factors.append(d)\n            n //= d\n        d += 1\n    if n > 1:\n        factors.append(n)\n    return factors",
+    "reference_docstring": "Find all prime factors of a positive integer n using trial division. Returns a list of prime factors in ascending order, including repeated factors."
+  },
+  {
+    "id": 14,
+    "task": "docstring_generation",
+    "code": "def merge_intervals(intervals):\n    if not intervals:\n        return []\n    intervals.sort(key=lambda x: x[0])\n    merged = [intervals[0]]\n    for start, end in intervals[1:]:\n        if start <= merged[-1][1]:\n            merged[-1] = (merged[-1][0], max(merged[-1][1], end))\n        else:\n            merged.append((start, end))\n    return merged",
+    "reference_docstring": "Merge overlapping intervals from a list of (start, end) tuples. Returns a new list of merged intervals sorted by start time. Adjacent or overlapping intervals are combined into one."
+  },
+  {
+    "id": 15,
+    "task": "docstring_generation",
+    "code": "def is_valid_parentheses(s):\n    stack = []\n    pairs = {')': '(', '}': '{', ']': '['}\n    for char in s:\n        if char in '({[':\n            stack.append(char)\n        elif char in ')}]':\n            if not stack or stack[-1] != pairs[char]:\n                return False\n            stack.pop()\n    return len(stack) == 0",
+    "reference_docstring": "Check whether a string of brackets is valid. A string is valid if every opening bracket has a matching closing bracket in the correct order. Supports parentheses, curly braces, and square brackets."
+  },
+  {
+    "id": 16,
+    "task": "docstring_generation",
+    "code": "def moving_average(data, window_size):\n    if window_size <= 0 or window_size > len(data):\n        return []\n    result = []\n    window_sum = sum(data[:window_size])\n    result.append(window_sum / window_size)\n    for i in range(window_size, len(data)):\n        window_sum += data[i] - data[i - window_size]\n        result.append(window_sum / window_size)\n    return result",
+    "reference_docstring": "Compute the moving average of a list of numbers with the given window size. Uses a sliding window for efficient computation. Returns an empty list if the window size is invalid."
+  },
+  {
+    "id": 17,
+    "task": "docstring_generation",
+    "code": "def flatten_dict(d, parent_key='', sep='.'):\n    items = []\n    for k, v in d.items():\n        new_key = f\"{parent_key}{sep}{k}\" if parent_key else k\n        if isinstance(v, dict):\n            items.extend(flatten_dict(v, new_key, sep).items())\n        else:\n            items.append((new_key, v))\n    return dict(items)",
+    "reference_docstring": "Flatten a nested dictionary into a single-level dictionary with dot-separated keys. Nested keys are joined with the specified separator. Non-dict values are preserved as-is."
+  },
+  {
+    "id": 18,
+    "task": "docstring_generation",
+    "code": "def matrix_multiply(a, b):\n    rows_a, cols_a = len(a), len(a[0])\n    rows_b, cols_b = len(b), len(b[0])\n    if cols_a != rows_b:\n        raise ValueError(\"Incompatible matrix dimensions\")\n    result = [[0] * cols_b for _ in range(rows_a)]\n    for i in range(rows_a):\n        for j in range(cols_b):\n            for k in range(cols_a):\n                result[i][j] += a[i][k] * b[k][j]\n    return result",
+    "reference_docstring": "Multiply two matrices represented as lists of lists. Returns the product matrix. Raises ValueError if the number of columns in the first matrix does not match the number of rows in the second."
+  },
+  {
+    "id": 19,
+    "task": "docstring_generation",
+    "code": "def count_word_frequency(text):\n    words = text.lower().split()\n    freq = {}\n    for word in words:\n        word = word.strip('.,!?;:')\n        freq[word] = freq.get(word, 0) + 1\n    return freq",
+    "reference_docstring": "Count the frequency of each word in a text string. Words are lowercased and stripped of common punctuation. Returns a dictionary mapping each word to its count."
+  },
+  {
+    "id": 20,
+    "task": "docstring_generation",
+    "code": "def encode_run_length(s):\n    if not s:\n        return \"\"\n    result = []\n    count = 1\n    for i in range(1, len(s)):\n        if s[i] == s[i-1]:\n            count += 1\n        else:\n            result.append(f\"{s[i-1]}{count}\")\n            count = 1\n    result.append(f\"{s[-1]}{count}\")\n    return ''.join(result)",
+    "reference_docstring": "Encode a string using run-length encoding. Each character is followed by the number of consecutive occurrences. Returns an empty string for empty input."
+  }
+]

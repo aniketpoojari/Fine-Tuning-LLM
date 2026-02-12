@@ -11,9 +11,9 @@ def tokenize(row, format, tokenizer):
     prompt_tokens = tokenizer(prompt, truncation=False, add_special_tokens=False)
     answer_tokens = tokenizer(answer, truncation=False, add_special_tokens=False)
 
-    input_ids = prompt_tokens["input_ids"] + answer_tokens["input_ids"]
+    input_ids = prompt_tokens["input_ids"] + answer_tokens["input_ids"] + [tokenizer.eos_token_id]
     attention_mask = [1] * len(input_ids)
-    labels = [-100] * len(prompt_tokens["input_ids"]) + answer_tokens["input_ids"]
+    labels = [-100] * len(prompt_tokens["input_ids"]) + answer_tokens["input_ids"] + [tokenizer.eos_token_id]
 
     return {
         "input_ids": input_ids,

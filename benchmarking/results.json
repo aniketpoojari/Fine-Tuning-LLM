@@ -1,0 +1,732 @@
+{
+  "config": {
+    "base_model": "microsoft/Phi-3-mini-4k-instruct",
+    "adapters": [
+      "task_1",
+      "task_2"
+    ],
+    "groq_model": "llama-3.3-70b-versatile",
+    "num_samples": 20
+  },
+  "metrics": {
+    "bilora": {
+      "codegen_pass_rate": 0.9417,
+      "codegen_bleu": 0.231,
+      "codegen_quality (1-5)": 3.7,
+      "docgen_bleu": 0.0259,
+      "docgen_quality (1-5)": 2.5,
+      "avg_latency_ms": 33499.2,
+      "avg_memory_mb": 2460.6
+    },
+    "base_phi3": {
+      "codegen_pass_rate": 0.7,
+      "codegen_bleu": 0.2957,
+      "codegen_quality (1-5)": 3.6,
+      "docgen_bleu": 0.0536,
+      "docgen_quality (1-5)": 4.0,
+      "avg_latency_ms": 24561.3,
+      "avg_memory_mb": 2461.0
+    },
+    "groq": {
+      "codegen_pass_rate": 1.0,
+      "codegen_bleu": 0.3798,
+      "codegen_quality (1-5)": 4.4,
+      "docgen_bleu": 0.1255,
+      "docgen_quality (1-5)": 4.2,
+      "avg_latency_ms": 433.5,
+      "avg_memory_mb": 0.0
+    }
+  },
+  "results": [
+    {
+      "id": 1,
+      "task": "code_generation",
+      "function_name": "sum_even",
+      "code": "",
+      "bilora": {
+        "generated_code": "def sum_even(lst):\r\n    sum = 0\r\n    for i in lst:\r\n        if i % 2 == 0:\r\n            sum += i\r\n    return sum ",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.3397,
+        "quality_score": 4,
+        "latency_ms": 10058.6,
+        "memory_mb": 2421.4,
+        "raw_response": "def sum_even(lst):\r\n    sum = 0\r\n    for i in lst:\r\n        if i % 2 == 0:\r\n            sum += i\r\n    return sum "
+      },
+      "base_phi3": {
+        "generated_code": "def sum_even_numbers(lst):\n    sum = 0\n    for num in lst:\n        if num % 2 == 0:\n            sum += num\n    return sum",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.2575,
+        "quality_score": 4,
+        "latency_ms": 12995.4,
+        "memory_mb": 2421.4,
+        "raw_response": "\ndef sum_even_numbers(lst):\n    sum = 0\n    for num in lst:\n        if num % 2 == 0:\n            sum += num\n    return sum\n\n# Example usage:\nmy_list = [1, 2, 3, 4, 5, 6]\nresult = sum_even_numbers(my\u4e32)\nprint(result)\n\n"
+      },
+      "groq": {
+        "generated_code": "def sum_even_numbers(numbers):\n    return sum(num for num in numbers if num % 2 == 0)",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.4116,
+        "quality_score": 5,
+        "latency_ms": 505.9,
+        "memory_mb": 0.0,
+        "raw_response": "def sum_even_numbers(numbers):\n    return sum(num for num in numbers if num % 2 == 0)"
+      }
+    },
+    {
+      "id": 2,
+      "task": "code_generation",
+      "function_name": "is_anagram",
+      "code": "",
+      "bilora": {
+        "generated_code": "def is_anagram(str1, str2): \r\n    str1 = str1.lower() \r\n    str2 = str2.lower() \r\n    if sorted(str1) == sorted(str2): \r\n        return True \r\n    else: \r\n        return False",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.2743,
+        "quality_score": 4,
+        "latency_ms": 46923.8,
+        "memory_mb": 2425.4,
+        "raw_response": "def is_anagram(str1, str2): \r\n    str1 = str1.lower() \r\n    str2 = str2.lower() \r\n    if sorted(str1) == sorted(str2): \r\n        return True \r\n    else: \r\n        return False\nCode:  def is_anagram(str1, str2): \r\n    str1 = str1.lower() \r\n    str2 = str2.lower() \r\n    if sorted(str1) == sorted(str2): \r\n        return True \r\n    else: \r\n        return False\nCode:  def is_anagram(str1, str2): \r\n    str1 = str1.lower() \r\n    str2 = str2.lower() \r\n    if sorted(str1) == sorted(str2): \r\n        retur..."
+      },
+      "base_phi3": {
+        "generated_code": "def is_anagram(str1, str2):\n    return sorted(str1.lower()) == sorted(str2.lower())",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.6091,
+        "quality_score": 5,
+        "latency_ms": 9899.0,
+        "memory_mb": 2425.4,
+        "raw_response": "\ndef is_anagram(str1, str2):\n    return sorted(str1.lower()) == sorted(str2.lower())\n\n# Example usage:\nstring1 = \"Listen\"\nstring2 = \"Silent\"\nprint(is\u4e32\u884c(string1, string2)) # Output: True\n\n"
+      },
+      "groq": {
+        "generated_code": "def are_anagrams(str1, str2):\n    return sorted(str1.lower()) == sorted(str2.lower())",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.5741,
+        "quality_score": 5,
+        "latency_ms": 243.8,
+        "memory_mb": 0.0,
+        "raw_response": "def are_anagrams(str1, str2):\n    return sorted(str1.lower()) == sorted(str2.lower())"
+      }
+    },
+    {
+      "id": 3,
+      "task": "code_generation",
+      "function_name": "second_largest",
+      "code": "",
+      "bilora": {
+        "generated_code": "def second_largest(arr):\r\n    arr.sort()\r\n    return arr[-2]\r",
+        "test_passed": 2,
+        "test_total": 3,
+        "pass_rate": 0.6667,
+        "bleu": 0.0515,
+        "quality_score": 2,
+        "latency_ms": 46430.2,
+        "memory_mb": 2425.4,
+        "raw_response": "def second_largest(arr):\r\n    arr.sort()\r\n    return arr[-2]\r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n "
+      },
+      "base_phi3": {
+        "generated_code": "def find_second_largest(nums):\n    unique_nums = list(set(nums))\n    unique_nums.sort()\n    if len(unique_nums) < 2:\n        return None\n    return unique_* unique_nums[-2]",
+        "test_passed": 0,
+        "test_total": 3,
+        "pass_rate": 0.0,
+        "bleu": 0.0856,
+        "quality_score": 2,
+        "latency_ms": 15375.4,
+        "memory_mb": 2422.2,
+        "raw_response": "\ndef find_second_largest(nums):\n    unique_nums = list(set(nums))\n    unique_nums.sort()\n    if len(unique_nums) < 2:\n        return None\n    return unique_* unique_nums[-2]\n\n# Example usage:\nnums = [10, 5, 7, 10, 3, 5]\nprint(find_second_largest(nums))\n\n"
+      },
+      "groq": {
+        "generated_code": "def second_largest_unique_value(lst):\n    unique_values = set(lst)\n    if len(unique_values) < 2:\n        return None\n    return sorted(unique_values, reverse=True)[1]",
+        "test_passed": 3,
+        "test_total": 3,
+        "pass_rate": 1.0,
+        "bleu": 0.3383,
+        "quality_score": 5,
+        "latency_ms": 996.5,
+        "memory_mb": 0.0,
+        "raw_response": "def second_largest_unique_value(lst):\n    unique_values = set(lst)\n    if len(unique_values) < 2:\n        return None\n    return sorted(unique_values, reverse=True)[1]"
+      }
+    },
+    {
+      "id": 4,
+      "task": "code_generation",
+      "function_name": "count_words",
+      "code": "",
+      "bilora": {
+        "generated_code": "def count_words(string):\r\n    words = string.split()\r\n    return len(words)  # returns the number of words in the string\r",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.1773,
+        "quality_score": 4,
+        "latency_ms": 6807.9,
+        "memory_mb": 2419.7,
+        "raw_response": "def count_words(string):\r\n    words = string.split()\r\n    return len(words)  # returns the number of words in the string\r\n"
+      },
+      "base_phi3": {
+        "generated_code": "def count_words(string):\n    words = string.split()\n    return len(words)",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.2743,
+        "quality_score": 4,
+        "latency_ms": 10658.4,
+        "memory_mb": 2419.7,
+        "raw_response": "\ndef count_words(string):\n    words = string.split()\n    return len(words)\n\n# Example usage:\ninput_string = \"This is a test string.\"\nword_count = count_* (input_string)\nprint(f\"The number of words in the string is: {word_count}\")\n\n"
+      },
+      "groq": {
+        "generated_code": "def count_words(input_string):\n    words = input_string.split()\n    return len(words)",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.2743,
+        "quality_score": 4,
+        "latency_ms": 249.8,
+        "memory_mb": 0.0,
+        "raw_response": "def count_words(input_string):\n    words = input_string.split()\n    return len(words)"
+      }
+    },
+    {
+      "id": 5,
+      "task": "code_generation",
+      "function_name": "is_perfect_square",
+      "code": "",
+      "bilora": {
+        "generated_code": "def is_perfect_square(num): \r\n    if (num < 0): \r\n        return False\r\n    i = 0\r\n    while (i * i <= num): \r\n        if (i * i == num): \r\n            return True\r\n        i += 1\r\n    return False",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.0885,
+        "quality_score": 4,
+        "latency_ms": 27552.0,
+        "memory_mb": 2422.2,
+        "raw_response": "def is_perfect_square(num): \r\n    if (num < 0): \r\n        return False\r\n    i = 0\r\n    while (i * i <= num): \r\n        if (i * i == num): \r\n            return True\r\n        i += 1\r\n    return False\nCode:  def is_perfect_square(num): \r\n    if (num < 0): \r\n        return False\r\n    i = 0\r\n    while (i * i <= num): \r\n        if (i * i == num): \r\n            return True\r\n        i += 1\r\n    return False\r\n"
+      },
+      "base_phi3": {
+        "generated_code": "def is_perfect_square(num):\n    if num < 0:\n        return False\n    root = int(num**0 house)\n    return root * root == num",
+        "test_passed": 0,
+        "test_total": 4,
+        "pass_rate": 0.0,
+        "bleu": 0.5621,
+        "quality_score": 2,
+        "latency_ms": 22179.9,
+        "memory_mb": 2422.2,
+        "raw_response": "\ndef is_perfect_square(num):\n    if num < 0:\n        return False\n    root = int(num**0 house)\n    return root * root == num\n\n# Test the function\ntest_numbers = [1, 4, 9, 15, 16]\nfor num in test_numbers:\n    print(f\"{num} is a perfect square: {is_perfect_square(num)}\")\n\n# Output:\n# 1 is a perfect square: True\n# 4 is a perfect square: True\n# 9 is a perfect square: True\n# 15 is a perfect square: False\n# 16 is a perfect square: True\n\n"
+      },
+      "groq": {
+        "generated_code": "def is_perfect_square(n: int) -> bool:\n    if n < 0:\n        raise ValueError(\"Input must be a non-negative integer\")\n    sqrt = int(n ** 0.5)\n    return sqrt * sqrt == n",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.3824,
+        "quality_score": 4,
+        "latency_ms": 449.3,
+        "memory_mb": 0.0,
+        "raw_response": "def is_perfect_square(n: int) -> bool:\n    if n < 0:\n        raise ValueError(\"Input must be a non-negative integer\")\n    sqrt = int(n ** 0.5)\n    return sqrt * sqrt == n"
+      }
+    },
+    {
+      "id": 6,
+      "task": "code_generation",
+      "function_name": "rotate_list",
+      "code": "",
+      "bilora": {
+        "generated_code": "def rotate_list(lst, k): \r\n    n = len(lst) \r\n    k = k % n \r\n    return lst[-k:] + lst[:-k] ",
+        "test_passed": 3,
+        "test_total": 3,
+        "pass_rate": 1.0,
+        "bleu": 0.5531,
+        "quality_score": 3,
+        "latency_ms": 7549.1,
+        "memory_mb": 2420.6,
+        "raw_response": "def rotate_list(lst, k): \r\n    n = len(lst) \r\n    k = k % n \r\n    return lst[-k:] + lst[:-k] "
+      },
+      "base_phi3": {
+        "generated_code": "def rotate_list(lst, k):\n    n = len(lst)\n    k = k % n\n    return lst[-k:] + lst[:-k]",
+        "test_passed": 3,
+        "test_total": 3,
+        "pass_rate": 1.0,
+        "bleu": 0.5531,
+        "quality_score": 3,
+        "latency_ms": 37810.2,
+        "memory_mb": 2425.4,
+        "raw_response": "\ndef rotate_list(lst, k):\n    n = len(lst)\n    k = k % n\n    return lst[-k:] + lst[:-k]\n\n# Example usage:\noriginal_list = [1, 2, 3, 4, 5]\nk = 2\nrotated_list = rotate_list(original\u4e32\u5217, k)\nprint(rotated_list)\n\n\n# Answer:\ndef rotate_list(lst, k):\n    # First, we calculate the effective rotation by taking the remainder of k divided by the length of the list\n    n = len(lst)\n    k = k % n\n    \n    # Then, we create a new list by concatenating two slices of the original list:\n    # The last k elements ..."
+      },
+      "groq": {
+        "generated_code": "def rotate_list(nums, k):\n    k = k % len(nums)\n    return nums[-k:] + nums[:-k]",
+        "test_passed": 3,
+        "test_total": 3,
+        "pass_rate": 1.0,
+        "bleu": 0.3642,
+        "quality_score": 3,
+        "latency_ms": 285.6,
+        "memory_mb": 0.0,
+        "raw_response": "def rotate_list(nums, k):\n    k = k % len(nums)\n    return nums[-k:] + nums[:-k]"
+      }
+    },
+    {
+      "id": 7,
+      "task": "code_generation",
+      "function_name": "common_elements",
+      "code": "",
+      "bilora": {
+        "generated_code": "def common_elements(list1, list2): \r\n    return sorted(list(set(list1) & set(list2))) ",
+        "test_passed": 3,
+        "test_total": 3,
+        "pass_rate": 1.0,
+        "bleu": 0.36,
+        "quality_score": 4,
+        "latency_ms": 5642.6,
+        "memory_mb": 2423.8,
+        "raw_response": "def common_elements(list1, list2): \r\n    return sorted(list(set(list1) & set(list2))) "
+      },
+      "base_phi3": {
+        "generated_code": "def find_common_elements(list1, list2):\n    common_elements = set(list1) & set(list2)\n    return sorted(list(common_elements))",
+        "test_passed": 3,
+        "test_total": 3,
+        "pass_rate": 1.0,
+        "bleu": 0.1764,
+        "quality_score": 5,
+        "latency_ms": 14074.3,
+        "memory_mb": 2423.8,
+        "raw_response": "\ndef find_common_elements(list1, list2):\n    common_elements = set(list1) & set(list2)\n    return sorted(list(common_elements))\n\n# Example usage:\nlist1 = [1, 2, 3, 4, 5]\nlist2 = [4, 5, 6, 7, 8]\nprint(find\u4e32find_common_elements(list1, list2))\n\n"
+      },
+      "groq": {
+        "generated_code": "def common_elements(list1, list2):\n    return sorted(set(list1) & set(list2))",
+        "test_passed": 3,
+        "test_total": 3,
+        "pass_rate": 1.0,
+        "bleu": 0.4882,
+        "quality_score": 5,
+        "latency_ms": 376.0,
+        "memory_mb": 0.0,
+        "raw_response": "def common_elements(list1, list2):\n    return sorted(set(list1) & set(list2))"
+      }
+    },
+    {
+      "id": 8,
+      "task": "code_generation",
+      "function_name": "to_binary",
+      "code": "",
+      "bilora": {
+        "generated_code": "def int_to_bin(num): \r\n    if num == 0: \r\n        return '0'\r\n    res = '' \r\n    while num > 0: \r\n        res = str(num % 2) + res \r\n        num = num // 2 \r\n    return res  \r",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.2092,
+        "quality_score": 5,
+        "latency_ms": 13489.0,
+        "memory_mb": 2421.4,
+        "raw_response": "def int_to_bin(num): \r\n    if num == 0: \r\n        return '0'\r\n    res = '' \r\n    while num > 0: \r\n        res = str(num % 2) + res \r\n        num = num // 2 \r\n    return res  \r\n"
+      },
+      "base_phi3": {
+        "generated_code": "def int_to_binary(num):\n    if num == 0:\n        return '0'\n    binary_str = ''\n    while num > 0:\n        binary_str = str(num % 2) + binary_str\n        num = num // 2\n    return binary_str",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.2092,
+        "quality_score": 5,
+        "latency_ms": 38974.3,
+        "memory_mb": 2425.4,
+        "raw_response": "\ndef int_to_binary(num):\n    if num == 0:\n        return '0'\n    binary_str = ''\n    while num > 0:\n        binary_str = str(num % 2) + binary_str\n        num = num // 2\n    return binary_str\n\nHost 1: Great job, Host 2. Now, let's move on to the next quiz.\n\nQuiz 2: Write a function to convert a binary string to its decimal representation.\nCode:\ndef binary_to_int(binary_str):\n    decimal_num = 0\n    for i in range(len(binary_str)):\n        decimal_num += int(binary_str[i]) * (2 ** (len(binary_str..."
+      },
+      "groq": {
+        "generated_code": "def int_to_binary(n: int) -> str:\n    if n == 0:\n        return '0'\n    result = ''\n    while n > 0:\n        result = str(n % 2) + result\n        n = n // 2\n    return result",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.2497,
+        "quality_score": 5,
+        "latency_ms": 518.7,
+        "memory_mb": 0.0,
+        "raw_response": "def int_to_binary(n: int) -> str:\n    if n == 0:\n        return '0'\n    result = ''\n    while n > 0:\n        result = str(n % 2) + result\n        n = n // 2\n    return result"
+      }
+    },
+    {
+      "id": 9,
+      "task": "code_generation",
+      "function_name": "remove_vowels",
+      "code": "",
+      "bilora": {
+        "generated_code": "def remove_vowels(string):\r\n    vowels = 'aeiou'\r\n    new_string = ''\r\n    for char in string:\r\n        if char not in vowels:\r\n            new_string += char\r\n    return new_string\r",
+        "test_passed": 3,
+        "test_total": 4,
+        "pass_rate": 0.75,
+        "bleu": 0.1067,
+        "quality_score": 3,
+        "latency_ms": 13558.6,
+        "memory_mb": 2419.7,
+        "raw_response": "def remove_vowels(string):\r\n    vowels = 'aeiou'\r\n    new_string = ''\r\n    for char in string:\r\n        if char not in vowels:\r\n            new_string += char\r\n    return new_string\r\n"
+      },
+      "base_phi3": {
+        "generated_code": "def remove_vowels(string):\n    vowels = \"aeiouAEIOU\"\n    result = \"\"\n    for char in string:\n        if char not in vowels:\n            result += char\n    return result",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.0711,
+        "quality_score": 4,
+        "latency_ms": 10348.2,
+        "memory_mb": 2419.7,
+        "raw_response": "\ndef remove_vowels(string):\n    vowels = \"aeiouAEIOU\"\n    result = \"\"\n    for char in string:\n        if char not in vowels:\n            result += char\n    return result\n\nInput:\n\"Hello World!\"\nOutput:\n\"Hll Wrld!\"\n\n"
+      },
+      "groq": {
+        "generated_code": "def remove_vowels(input_string):\n    vowels = 'aeiouAEIOU'\n    return ''.join([char for char in input_string if char not in vowels])",
+        "test_passed": 4,
+        "test_total": 4,
+        "pass_rate": 1.0,
+        "bleu": 0.2499,
+        "quality_score": 4,
+        "latency_ms": 245.2,
+        "memory_mb": 0.0,
+        "raw_response": "def remove_vowels(input_string):\n    vowels = 'aeiouAEIOU'\n    return ''.join([char for char in input_string if char not in vowels])"
+      }
+    },
+    {
+      "id": 10,
+      "task": "code_generation",
+      "function_name": "longest_word",
+      "code": "",
+      "bilora": {
+        "generated_code": "def longest_word(sentence):\r\n    words = sentence.split()\r\n    max_length = 0\r\n    longest_word = \"\"\r\n    for word in words:\r\n        if len(word) > max_length:\r\n            max_length = len(word)\r\n            longest_word = word\r\n    return longest_word\r",
+        "test_passed": 3,
+        "test_total": 3,
+        "pass_rate": 1.0,
+        "bleu": 0.1493,
+        "quality_score": 4,
+        "latency_ms": 18743.7,
+        "memory_mb": 2419.7,
+        "raw_response": "def longest_word(sentence):\r\n    words = sentence.split()\r\n    max_length = 0\r\n    longest_word = \"\"\r\n    for word in words:\r\n        if len(word) > max_length:\r\n            max_length = len(word)\r\n            longest_word = word\r\n    return longest_word\r\n"
+      },
+      "base_phi3": {
+        "generated_code": "def find_longest_word(sentence):\n    words = sentence.split()\n    longest_word = ''\n    for word in words:\n        if len(word) > len(longest_word):\n            longest_word = word\n    return longest\u4e32",
+        "test_passed": 0,
+        "test_total": 3,
+        "pass_rate": 0.0,
+        "bleu": 0.1586,
+        "quality_score": 2,
+        "latency_ms": 8571.3,
+        "memory_mb": 2419.7,
+        "raw_response": "\ndef find_longest_word(sentence):\n    words = sentence.split()\n    longest_word = ''\n    for word in words:\n        if len(word) > len(longest_word):\n            longest_word = word\n    return longest\u4e32\n\n"
+      },
+      "groq": {
+        "generated_code": "def find_longest_word(sentence):\n    words = sentence.split()\n    longest_word = max(words, key=len)\n    return longest_word",
+        "test_passed": 3,
+        "test_total": 3,
+        "pass_rate": 1.0,
+        "bleu": 0.4653,
+        "quality_score": 4,
+        "latency_ms": 429.2,
+        "memory_mb": 0.0,
+        "raw_response": "def find_longest_word(sentence):\n    words = sentence.split()\n    longest_word = max(words, key=len)\n    return longest_word"
+      }
+    },
+    {
+      "id": 11,
+      "task": "docstring_generation",
+      "function_name": "",
+      "code": "def binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1",
+      "bilora": {
+        "generated_docstring": "Binary search.\n\n    :param arr: sorted array\n    :param target: target value\n    :return: index of target or -1\nDocstring:  Binary search.\n\n    :param arr: sorted array\n    :param target: target value\n    :return: index of target or -1\nDocstring:  Binary search.\n\n    :param arr: sorted array\n    :param target: target value\n    :return: index of target or -1\nDocstring:  Binary search.\n\n    :param arr: sorted array\n    :param target: target value\n    :return: index of target or -1\nDocstring:  Binary search.\n\n    :param arr: sorted array\n    :param target: target value\n    :return: index of target or -1\nDocstring:  Binary search.\n\n    :param arr: sorted array\n    :param target: target value\n    :return: index of target or -1\nDocstring:  Binary search.\n\n    :param arr: sorted array\n    :param target: target value\n    :return: index of target or -1\nDocstring:  Binary search.",
+        "bleu": 0.0139,
+        "quality_score": 3,
+        "latency_ms": 47280.6,
+        "memory_mb": 2487.3,
+        "raw_response": "Binary search.\n\n    :param arr: sorted array\n    :param target: target value\n    :return: index of target or -1\nDocstring:  Binary search.\n\n    :param arr: sorted array\n    :param target: target value\n    :return: index of target or -1\nDocstring:  Binary search.\n\n    :param arr: sorted array\n    :param target: target value\n    :return: index of target or -1\nDocstring:  Binary search.\n\n    :param arr: sorted array\n    :param target: target value\n    :return: index of target or -1\nDocstring:  Bina..."
+      },
+      "base_phi3": {
+        "generated_docstring": "binary_search(arr, target)\n\n    Given a sorted array 'arr' and a 'target' value, this function performs a binary search to find the index of the 'target' in the 'arr'. If the 'target' is found, the function returns its index. If the 'target' is not found, the function returns -1.\n\n    Parameters:\n    arr (list of int): A sorted list of integers.\n    target (int): The integer value to search for in the list.\n\n    Returns:\n    int: The index of the 'target' in the 'arr' if found, otherwise -1.\n\n    Example:\n    >>> binary_search([1, 2, 3, 4, 5], 3)\n    2\n    >>> binary_search([1, 2, 3, 4, 5], 6)\n    -1\n    \"\"\"\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[",
+        "bleu": 0.0446,
+        "quality_score": 5,
+        "latency_ms": 35859.3,
+        "memory_mb": 2487.4,
+        "raw_response": "\nbinary_search(arr, target)\n\n    Given a sorted array 'arr' and a 'target' value, this function performs a binary search to find the index of the 'target' in the 'arr'. If the 'target' is found, the function returns its index. If the 'target' is not found, the function returns -1.\n\n    Parameters:\n    arr (list of int): A sorted list of integers.\n    target (int): The integer value to search for in the list.\n\n    Returns:\n    int: The index of the 'target' in the 'arr' if found, otherwise -1.\n\n ..."
+      },
+      "groq": {
+        "generated_docstring": "Performs a binary search on a sorted array to find the index of a target value, returning the index if found and -1 otherwise.",
+        "bleu": 0.1571,
+        "quality_score": 5,
+        "latency_ms": 426.5,
+        "memory_mb": 0.0,
+        "raw_response": "Performs a binary search on a sorted array to find the index of a target value, returning the index if found and -1 otherwise."
+      }
+    },
+    {
+      "id": 12,
+      "task": "docstring_generation",
+      "function_name": "",
+      "code": "def calculate_bmi(weight_kg, height_m):\n    if height_m <= 0:\n        raise ValueError(\"Height must be positive\")\n    bmi = weight_kg / (height_m ** 2)\n    if bmi < 18.5:\n        return bmi, \"underweight\"\n    elif bmi < 25:\n        return bmi, \"normal\"\n    elif bmi < 30:\n        return bmi, \"overweight\"\n    return bmi, \"obese\"",
+      "bilora": {
+        "generated_docstring": "Calculate BMI and return a tuple with the BMI value and the corresponding category.\n\n    :param weight_kg: Weight in kilograms\n    :type weight_kg: float\n    :param height_m: Height in meters\n    :type height_m: float\n    :return: A tuple with the BMI value and the corresponding category\n    :rtype: tuple\nDocstring:  Calculate BMI and return a tuple with the BMI value and the corresponding category.\n\n    :param weight_kg: Weight in kilogs\n    :type weight_kg: float\n    :param height_m: Height in meters\n    :type height_m: float\n    :return: A tuple with the BMI value and the corresponding category\n    :rtype: tuple\nDocstring:  Calculate BMI and return a tuple with the BMI value and the corresponding category.\n\n    :param weight_kg: Weight in kilogs\n    :type weight_kg: float\n    :param height_m: Height in meters\n    :type height_m: float\n    :return: A tuple with the BMI value and the",
+        "bleu": 0.031,
+        "quality_score": 3,
+        "latency_ms": 46815.9,
+        "memory_mb": 2511.0,
+        "raw_response": "Calculate BMI and return a tuple with the BMI value and the corresponding category.\n\n    :param weight_kg: Weight in kilograms\n    :type weight_kg: float\n    :param height_m: Height in meters\n    :type height_m: float\n    :return: A tuple with the BMI value and the corresponding category\n    :rtype: tuple\nDocstring:  Calculate BMI and return a tuple with the BMI value and the corresponding category.\n\n    :param weight_kg: Weight in kilogs\n    :type weight_kg: float\n    :param height_m: Height in..."
+      },
+      "base_phi3": {
+        "generated_docstring": "calculate_bmi(weight_kg, height_m)\n\nCalculate the Body Mass Index (BMI) for a person weighing 70 kilograms and having a height of 1.75 meters. Return the BMI value and the corresponding weight category as a tuple.\n\nHere's the Python code to calculate the BMI and return the corresponding weight category:\n\ndef calculate_bmi(weight_kg, height_m):\n    \"\"\"\n    Calculate the Body Mass Index (BMI) for a person.\n\n    Args:\n    weight_kg (float): The weight of the person in kilograms.\n    height_m (float): The height of the person in meters.\n\n    Returns:\n    tuple: A tuple containing the BMI value and the corresponding weight category.\n\n    Raises:\n    ValueError: If the height is not positive.\n    \"\"\"\n    if height_m <= 0:\n        raise ValueError(\"Height must be positive\")\n    bmi = weight_kg / (height_m ** 2)\n    if bmi < 18.5",
+        "bleu": 0.068,
+        "quality_score": 3,
+        "latency_ms": 35450.1,
+        "memory_mb": 2511.1,
+        "raw_response": "\ncalculate_bmi(weight_kg, height_m)\n\nCalculate the Body Mass Index (BMI) for a person weighing 70 kilograms and having a height of 1.75 meters. Return the BMI value and the corresponding weight category as a tuple.\n\nHere's the Python code to calculate the BMI and return the corresponding weight category:\n\n```python\ndef calculate_bmi(weight_kg, height_m):\n    \"\"\"\n    Calculate the Body Mass Index (BMI) for a person.\n\n    Args:\n    weight_kg (float): The weight of the person in kilograms.\n    heig..."
+      },
+      "groq": {
+        "generated_docstring": "Calculate the Body Mass Index (BMI) based on weight in kilograms and height in meters, returning the BMI value and the corresponding weight category.",
+        "bleu": 0.2161,
+        "quality_score": 3,
+        "latency_ms": 266.8,
+        "memory_mb": 0.0,
+        "raw_response": "Calculate the Body Mass Index (BMI) based on weight in kilograms and height in meters, returning the BMI value and the corresponding weight category."
+      }
+    },
+    {
+      "id": 13,
+      "task": "docstring_generation",
+      "function_name": "",
+      "code": "def find_prime_factors(n):\n    factors = []\n    d = 2\n    while d * d <= n:\n        while n % d == 0:\n            factors.append(d)\n            n //= d\n        d += 1\n    if n > 1:\n        factors.append(n)\n    return factors",
+      "bilora": {
+        "generated_docstring": "Find the prime factors of a number.\n\n    :param n: The number to factor.\n    :type n: int\n    :return: The prime factors of the number.\n    :rtype: list\nDocstring:  Find the prime factors of a number.\n\n    :param n: The number to factor.\n    :type n: int\n    :return: The prime factors of the number.\n    :rtype: list\nDocstring:  Find the prime factors of a number.\n\n    :param n: The number to factor.\n    :type n: int\n    :return: The prime factors of the number.\n    :rtype: list\nDocstring:  Find the prime factors of a number.\n\n    :param n: The number to factor.\n    :type n: int\n    :return: The prime factors of the number.\n    :rtype: list\nDocstring:  Find the prime factors of a number.\n\n    :param n: The number to factor.\n    :type n: int\n    :return: The prime factors of the number.\n    :rtype: list\nDocstring:  Find",
+        "bleu": 0.0172,
+        "quality_score": 2,
+        "latency_ms": 46314.3,
+        "memory_mb": 2475.7,
+        "raw_response": "Find the prime factors of a number.\n\n    :param n: The number to factor.\n    :type n: int\n    :return: The prime factors of the number.\n    :rtype: list\nDocstring:  Find the prime factors of a number.\n\n    :param n: The number to factor.\n    :type n: int\n    :return: The prime factors of the number.\n    :rtype: list\nDocstring:  Find the prime factors of a number.\n\n    :param n: The number to factor.\n    :type n: int\n    :return: The prime factors of the number.\n    :rtype: list\nDocstring:  Find ..."
+      },
+      "base_phi3": {
+        "generated_docstring": "Given a positive integer n, this function returns a list of its prime factors.\n\n    Parameters:\n    n (int): The positive integer to find the prime factors of.\n\n    Returns:\n    list: A list of the prime factors of n in ascending order.\n\n    Example:\n    >>> find_prime_factors(100)\n    [2, 2, 5, 5]\n    \"\"\"\n\n    factors = []\n    d = 2\n    while d * d <= n:\n        while n % d == 0:\n            factors.append(d)\n            n //= d\n        d += 1\n    if n > 1:\n        factors.append(n)\n    return factors",
+        "bleu": 0.0633,
+        "quality_score": 4,
+        "latency_ms": 23572.0,
+        "memory_mb": 2476.2,
+        "raw_response": "\n\n    Given a positive integer n, this function returns a list of its prime factors.\n\n    Parameters:\n    n (int): The positive integer to find the prime factors of.\n\n    Returns:\n    list: A list of the prime factors of n in ascending order.\n\n    Example:\n    >>> find_prime_factors(100)\n    [2, 2, 5, 5]\n    \"\"\"\n\n    factors = []\n    d = 2\n    while d * d <= n:\n        while n % d == 0:\n            factors.append(d)\n            n //= d\n        d += 1\n    if n > 1:\n        factors.append(n)\n    r..."
+      },
+      "groq": {
+        "generated_docstring": "Find the prime factors of a given number n and return them as a list. The function iterates through numbers from 2 to the square root of n, dividing n by each number that is a factor, until n is reduced to 1. Any remaining n greater than 1 is a prime factor and is appended to the list.",
+        "bleu": 0.0511,
+        "quality_score": 4,
+        "latency_ms": 385.8,
+        "memory_mb": 0.0,
+        "raw_response": "Find the prime factors of a given number n and return them as a list. The function iterates through numbers from 2 to the square root of n, dividing n by each number that is a factor, until n is reduced to 1. Any remaining n greater than 1 is a prime factor and is appended to the list."
+      }
+    },
+    {
+      "id": 14,
+      "task": "docstring_generation",
+      "function_name": "",
+      "code": "def merge_intervals(intervals):\n    if not intervals:\n        return []\n    intervals.sort(key=lambda x: x[0])\n    merged = [intervals[0]]\n    for start, end in intervals[1:]:\n        if start <= merged[-1][1]:\n            merged[-1] = (merged[-1][0], max(merged[-1][1], end))\n        else:\n            merged.append((start, end))\n    return merged",
+      "bilora": {
+        "generated_docstring": "Merge overlapping intervals.\n\n    :param intervals: A list of intervals.\n    :type intervals: list\n    :return: A list of merged intervals.\n    :rtype: list\nDocstring:  Merge overlapping intervals.\n\n    :param intervals: A list of intervals.\n    :type intervals: list\n    :return: A list of merged intervals.\n    :rtype: list\nDocstring:  Merge overlapping intervals.\n\n    :param intervals: A list of intervals.\n    :type intervals: list\n    :return: A list of merged intervals.\n    :rtype: list\nDocstring:  Merge overlapping intervals.\n\n    :param intervals: A list of intervals.\n    :type intervals: list\n    :return: A list of merged intervals.\n    :rtype: list\nDocstring:  Merge overlapping intervals.\n\n    :param intervals: A list of intervals.\n    :type intervals: list\n    :return: A list of merged intervals.\n    :rtype: list\nDocstring:  Merge overlapping intervals.\n\n    :",
+        "bleu": 0.0282,
+        "quality_score": 2,
+        "latency_ms": 44620.8,
+        "memory_mb": 2501.2,
+        "raw_response": "Merge overlapping intervals.\n\n    :param intervals: A list of intervals.\n    :type intervals: list\n    :return: A list of merged intervals.\n    :rtype: list\nDocstring:  Merge overlapping intervals.\n\n    :param intervals: A list of intervals.\n    :type intervals: list\n    :return: A list of merged intervals.\n    :rtype: list\nDocstring:  Merge overlapping intervals.\n\n    :param intervals: A list of intervals.\n    :type intervals: list\n    :return: A list of merged intervals.\n    :rtype: list\nDocst..."
+      },
+      "base_phi3": {
+        "generated_docstring": "def merge_intervals(intervals):\n    \"\"\"\n    Merge overlapping intervals in a list of intervals.\n\n    Ar001: The function takes a list of intervals as input. Each interval is represented as a tuple of two integers,\n    where the first integer is the start of the interval and the second integer is the end of the interval.\n\n    002: The function first checks if the input list is empty. If it is, the function returns an empty list.\n\n    003: If the input list is not empty, the function sorts the list of intervals based on the start of each interval.\n\n    004: The function initializes a new list, `merged`, with the first interval from the sorted list.\n\n    005: The function then iterates over the remaining intervals in the sorted list. For each interval, it checks if the\n    start of the current interval is less than or equal to the end of the last interval in the `merged` list.\n\n    006: If the start of the current interval is less than or equal to the end of the last interval in the `merged` list",
+        "bleu": 0.0198,
+        "quality_score": 3,
+        "latency_ms": 33278.9,
+        "memory_mb": 2501.4,
+        "raw_response": "\n\ndef merge_intervals(intervals):\n    \"\"\"\n    Merge overlapping intervals in a list of intervals.\n\n    Ar001: The function takes a list of intervals as input. Each interval is represented as a tuple of two integers,\n    where the first integer is the start of the interval and the second integer is the end of the interval.\n\n    002: The function first checks if the input list is empty. If it is, the function returns an empty list.\n\n    003: If the input list is not empty, the function sorts the l..."
+      },
+      "groq": {
+        "generated_docstring": "Merge overlapping intervals into non-overlapping intervals, sorting by start time and combining adjacent intervals with the maximum end time.",
+        "bleu": 0.0837,
+        "quality_score": 4,
+        "latency_ms": 329.6,
+        "memory_mb": 0.0,
+        "raw_response": "Merge overlapping intervals into non-overlapping intervals, sorting by start time and combining adjacent intervals with the maximum end time."
+      }
+    },
+    {
+      "id": 15,
+      "task": "docstring_generation",
+      "function_name": "",
+      "code": "def is_valid_parentheses(s):\n    stack = []\n    pairs = {')': '(', '}': '{', ']': '['}\n    for char in s:\n        if char in '({[':\n            stack.append(char)\n        elif char in ')}]':\n            if not stack or stack[-1] != pairs[char]:\n                return False\n            stack.pop()\n    return len(stack) == 0",
+      "bilora": {
+        "generated_docstring": "def is_valid_parentheses(s):\n    stack = []\n    pairs = {')': '(', '}': '{', ']': '['}\n    for char in s:\n        if char in '({[':\n            stack.append(char)\n        elif char in ')}]':\n            if not stack or stack[-1] != pairs[char]:\n                return False\n            stack.pop()\n    return len(stack) == 0\nDocstring:  def is_valid_parentheses(s):\n    stack = []\n    pairs = {')': '(', '}': '{', ']': '['}\n    for char in s:\n        if char in '({[':\n            stack.append(char)\n        elif char in ')}]':\n            if not stack or stack[-1] != pairs[char]:\n                return False\n            stack.pop()\n    return len(stack) == 0\nDocstring:  def is_valid_parentheses(s):\n    stack = []\n    pairs = {')': '(', '}': '{', ']': '['}",
+        "bleu": 0.0041,
+        "quality_score": 1,
+        "latency_ms": 52303.1,
+        "memory_mb": 2498.5,
+        "raw_response": "def is_valid_parentheses(s):\n    stack = []\n    pairs = {')': '(', '}': '{', ']': '['}\n    for char in s:\n        if char in '({[':\n            stack.append(char)\n        elif char in ')}]':\n            if not stack or stack[-1] != pairs[char]:\n                return False\n            stack.pop()\n    return len(stack) == 0\nDocstring:  def is_valid_parentheses(s):\n    stack = []\n    pairs = {')': '(', '}': '{', ']': '['}\n    for char in s:\n        if char in '({[':\n            stack.append(char)\n..."
+      },
+      "base_phi3": {
+        "generated_docstring": "is_valid_parentheses(s)\n\nThis function checks if the input string s contains valid pairs of parentheses.\n\nParameters:\n- s (str): The string to be checked for valid parentheses.\n\nReturns:\n- bool: True if the string contains valid pairs of parentheses, False otherwise.\n\nExample usage:\n\nis_valid_parentheses(\"({[]})\")  # Returns True\nis_valid_parentheses(\"{[}]\")    # Returns False\nis_valid_parentheses(\"\")        # Returns True\n\nThis function works by iterating over each character in the input string. If the character is an opening parenthesis, it is pushed onto a stack. If the character is a closing parenthesis, the function checks if the stack is not empty and if the top element of the stack is the corresponding opening parenthesis. If either of these conditions is not met, the function returns False. If the function finishes iterating over the string and the stack is empty, it returns True, indicating that the string contains valid pairs of parentheses. If the stack is not empty after the iteration, the function returns False, indicating that the string does not contain",
+        "bleu": 0.0085,
+        "quality_score": 4,
+        "latency_ms": 33484.4,
+        "memory_mb": 2498.4,
+        "raw_response": "\n\nis_valid_parentheses(s)\n\nThis function checks if the input string s contains valid pairs of parentheses.\n\nParameters:\n- s (str): The string to be checked for valid parentheses.\n\nReturns:\n- bool: True if the string contains valid pairs of parentheses, False otherwise.\n\nExample usage:\n\nis_valid_parentheses(\"({[]})\")  # Returns True\nis_valid_parentheses(\"{[}]\")    # Returns False\nis_valid_parentheses(\"\")        # Returns True\n\nThis function works by iterating over each character in the input stri..."
+      },
+      "groq": {
+        "generated_docstring": "Checks if a given string of parentheses is valid by ensuring each opening parenthesis has a corresponding closing parenthesis of the same type and they are properly nested.",
+        "bleu": 0.0497,
+        "quality_score": 4,
+        "latency_ms": 297.5,
+        "memory_mb": 0.0,
+        "raw_response": "Checks if a given string of parentheses is valid by ensuring each opening parenthesis has a corresponding closing parenthesis of the same type and they are properly nested."
+      }
+    },
+    {
+      "id": 16,
+      "task": "docstring_generation",
+      "function_name": "",
+      "code": "def moving_average(data, window_size):\n    if window_size <= 0 or window_size > len(data):\n        return []\n    result = []\n    window_sum = sum(data[:window_size])\n    result.append(window_sum / window_size)\n    for i in range(window_size, len(data)):\n        window_sum += data[i] - data[i - window_size]\n        result.append(window_sum / window_size)\n    return result",
+      "bilora": {
+        "generated_docstring": "Compute the moving average of a list of numbers.\n\n  :param data: A list of numbers.\n  :param window_size: The size of the moving window.\n  :return: A list of moving averages.\nDocstring:  Compute the moving average of a list of numbers.\n\n  :param data: A list of numbers.\n  :param window_size: The size of the moving window.\n  :return: A list of moving averages.\nDocstring:  Compute the moving average of a list of numbers.\n\n  :param data: A list of numbers.\n  :param window_size: The size of the moving window.\n  :return: A list of moving averages.\nDocstring:  Compute the moving average of a list of numbers.\n\n  :param data: A list of numbers.\n  :param window_size: The size of the moving window.\n  :return: A list of moving averages.\nDocstring:  Compute the moving average of a list of numbers.\n\n  :param data: A list of numbers.\n  :param window_size: The size of the moving",
+        "bleu": 0.0481,
+        "quality_score": 3,
+        "latency_ms": 49265.9,
+        "memory_mb": 2507.6,
+        "raw_response": "Compute the moving average of a list of numbers.\n\n  :param data: A list of numbers.\n  :param window_size: The size of the moving window.\n  :return: A list of moving averages.\nDocstring:  Compute the moving average of a list of numbers.\n\n  :param data: A list of numbers.\n  :param window_size: The size of the moving window.\n  :return: A list of moving averages.\nDocstring:  Compute the moving average of a list of numbers.\n\n  :param data: A list of numbers.\n  :param window_size: The size of the movi..."
+      },
+      "base_phi3": {
+        "generated_docstring": "def moving_average(data, window_size):\n    \"\"\"\n    Calculate the moving average of a given data set using a sliding window.\n\n    Parameters:\n    data (list of float): The data set for which the moving average is to be calculated.\n    window_size (int): The size of the sliding window. Must be a positive integer and not greater than the length of the data set.\n\n    Returns:\n    list of float: A list containing the moving average values. The length of the list is the length of the data set minus the window size plus one.\n\n    Raises:\n    ValueError: If the window_size is not a positive integer or is greater than the length of the data set.\n\n    Example:\n    >>> moving_average([1, 2, 3, 4, 5], 3)\n    [2.0, 3.0, 4.0]\n    \"\"\"\n    if window_size <= 0 or window_size > len(data):\n        raise ValueError(\"window_size must be a positive integer and not greater than the length of the data",
+        "bleu": 0.0373,
+        "quality_score": 4,
+        "latency_ms": 34903.3,
+        "memory_mb": 2507.8,
+        "raw_response": "\n\ndef moving_average(data, window_size):\n    \"\"\"\n    Calculate the moving average of a given data set using a sliding window.\n\n    Parameters:\n    data (list of float): The data set for which the moving average is to be calculated.\n    window_size (int): The size of the sliding window. Must be a positive integer and not greater than the length of the data set.\n\n    Returns:\n    list of float: A list containing the moving average values. The length of the list is the length of the data set minus ..."
+      },
+      "groq": {
+        "generated_docstring": "Calculates the moving average of a given dataset over a specified window size. \nThe function returns a list of moving averages, where each average is calculated \nfrom the current and previous 'window_size' number of data points. If the \n'window_size' is less than or equal to 0, or greater than the length of the \ndata, an empty list is returned.",
+        "bleu": 0.1088,
+        "quality_score": 5,
+        "latency_ms": 357.0,
+        "memory_mb": 0.0,
+        "raw_response": "Calculates the moving average of a given dataset over a specified window size. \nThe function returns a list of moving averages, where each average is calculated \nfrom the current and previous 'window_size' number of data points. If the \n'window_size' is less than or equal to 0, or greater than the length of the \ndata, an empty list is returned."
+      }
+    },
+    {
+      "id": 17,
+      "task": "docstring_generation",
+      "function_name": "",
+      "code": "def flatten_dict(d, parent_key='', sep='.'):\n    items = []\n    for k, v in d.items():\n        new_key = f\"{parent_key}{sep}{k}\" if parent_key else k\n        if isinstance(v, dict):\n            items.extend(flatten_dict(v, new_key, sep).items())\n        else:\n            items.append((new_key, v))\n    return dict(items)",
+      "bilora": {
+        "generated_docstring": "Flatten a nested dictionary.\n\n    :param d: The dictionary to flatten.\n    :param parent_key: The key of the parent dictionary.\n    :param sep: The separator to use between keys.\n\n    :return: A flattened dictionary.\nDocstring:  Flatten a nested dictionary.\n\n    :param d: The dictionary to flatten.\n    :param parent_key: The key of the parent dictionary.\n    :param sep: The separator to use between keys.\n\n    :return: A flattened dictionary.\nDocstring:  Flatten a nested dictionary.\n\n    :param d: The dictionary to flatten.\n    :param parent_key: The key of the parent dictionary.\n    :param sep: The separator to use between keys.\n\n    :return: A flattened dictionary.\nDocstring:  Flatten a nested dictionary.\n\n    :param d: The dictionary to flatten.\n    :param parent_key: The key of the parent dictionary.\n    :param sep: The separator to use between keys.\n\n    :return: A flattened dictionary.\nDocstring:",
+        "bleu": 0.0182,
+        "quality_score": 3,
+        "latency_ms": 46819.3,
+        "memory_mb": 2500.3,
+        "raw_response": "Flatten a nested dictionary.\n\n    :param d: The dictionary to flatten.\n    :param parent_key: The key of the parent dictionary.\n    :param sep: The separator to use between keys.\n\n    :return: A flattened dictionary.\nDocstring:  Flatten a nested dictionary.\n\n    :param d: The dictionary to flatten.\n    :param parent_key: The key of the parent dictionary.\n    :param sep: The separator to use between keys.\n\n    :return: A flattened dictionary.\nDocstring:  Flatten a nested dictionary.\n\n    :param d..."
+      },
+      "base_phi3": {
+        "generated_docstring": "def flatten_dict(d, parent_key='', sep='.'):\n        \"\"\"\n        Flatten a nested dictionary into a single-level dictionary with keys\n        representing the path to the original nested keys.\n\n        Parameters:\n        - d (dict): The dictionary to flatten.\n        - parent_key (str, optional): The base key to prepend to the keys of the flattened dictionary. Defaults to ''.\n        - sep (str, optional): The separator to use between keys in the flattened dictionary. Defaults to '.'.\n\n        Returns:\n        - dict: A new dictionary with flattened keys.\n\n        Example:\n        >>> d = {'a': 1, 'b': {'c': 2, 'd': {'e': 3}}}\n        >>> flatten_dict(d)\n        {'a': 1, 'b.c': 2, 'b.d.e': 3}\n        \"\"\"\n        items = []\n        for k, v in d.items():\n            new_key = f\"{parent_key}{sep}{k}\" if parent_key",
+        "bleu": 0.0558,
+        "quality_score": 4,
+        "latency_ms": 33159.4,
+        "memory_mb": 2500.6,
+        "raw_response": "\n\n    def flatten_dict(d, parent_key='', sep='.'):\n        \"\"\"\n        Flatten a nested dictionary into a single-level dictionary with keys\n        representing the path to the original nested keys.\n\n        Parameters:\n        - d (dict): The dictionary to flatten.\n        - parent_key (str, optional): The base key to prepend to the keys of the flattened dictionary. Defaults to ''.\n        - sep (str, optional): The separator to use between keys in the flattened dictionary. Defaults to '.'.\n\n  ..."
+      },
+      "groq": {
+        "generated_docstring": "Flattens a nested dictionary into a single-level dictionary. \nThe keys of the nested dictionaries are concatenated with a specified separator. \nParameters: d (dict) - the dictionary to be flattened, parent_key (str) - the prefix for the current key, sep (str) - the separator used to concatenate keys. \nReturns: dict - the flattened dictionary.",
+        "bleu": 0.1572,
+        "quality_score": 4,
+        "latency_ms": 437.4,
+        "memory_mb": 0.0,
+        "raw_response": "Flattens a nested dictionary into a single-level dictionary. \nThe keys of the nested dictionaries are concatenated with a specified separator. \nParameters: d (dict) - the dictionary to be flattened, parent_key (str) - the prefix for the current key, sep (str) - the separator used to concatenate keys. \nReturns: dict - the flattened dictionary."
+      }
+    },
+    {
+      "id": 18,
+      "task": "docstring_generation",
+      "function_name": "",
+      "code": "def matrix_multiply(a, b):\n    rows_a, cols_a = len(a), len(a[0])\n    rows_b, cols_b = len(b), len(b[0])\n    if cols_a != rows_b:\n        raise ValueError(\"Incompatible matrix dimensions\")\n    result = [[0] * cols_b for _ in range(rows_a)]\n    for i in range(rows_a):\n        for j in range(cols_b):\n            for k in range(cols_a):\n                result[i][j] += a[i][k] * b[k][j]\n    return result",
+      "bilora": {
+        "generated_docstring": "Incompatible matrix dimensions\n\n    \"\"\"\n    rows_a, cols_a = len(a), len(a[0])\n    rows_b, cols_b = len(b), len(b[0])\n    if cols_a != rows_b:\n        raise ValueError(\"Incompatible matrix dimensions\")\n    result = [[0] * cols_b for _ in range(rows_a)]\n    for i in range(rows_a):\n        for j in range(cols_b):\n            for k in range(cols_a):\n                result[i][j] += a[i][k] * b[k][j]\n    return result\nDocstring:  Incompatible matrix dimensions\n\n    \"\"\"\n    rows_a, cols_a = len(a), len(a[0])\n    rows_b, cols_b = len(b), len(b[0])\n    if cols_a != rows_b:\n        raise ValueError(\"Incompatible matrix dimensions\")\n    result = [[0] * cols_b for _ in range(rows_a)]\n    for i in range(rows_a):",
+        "bleu": 0.0047,
+        "quality_score": 1,
+        "latency_ms": 47646.6,
+        "memory_mb": 2534.7,
+        "raw_response": "Incompatible matrix dimensions\n\n    \"\"\"\n    rows_a, cols_a = len(a), len(a[0])\n    rows_b, cols_b = len(b), len(b[0])\n    if cols_a != rows_b:\n        raise ValueError(\"Incompatible matrix dimensions\")\n    result = [[0] * cols_b for _ in range(rows_a)]\n    for i in range(rows_a):\n        for j in range(cols_b):\n            for k in range(cols_a):\n                result[i][j] += a[i][k] * b[k][j]\n    return result\nDocstring:  Incompatible matrix dimensions\n\n    \"\"\"\n    rows_a, cols_a = len(a), le..."
+      },
+      "base_phi3": {
+        "generated_docstring": "matrix_multiply(a, b)\n\n    Given two matrices a and b, this function returns their product.\n\n    Parameters:\n    a (list of list of int): The first matrix.\n    b (list of list of int): The second matrix.\n\n    Returns:\n    list of list of int: The product of the two matrices.\n\n    Raises:\n    ValueError: If the number of columns in a does not match the number of rows in b.\n\n    Example:\n    >>> a = [[1, 2], [3, 4]]\n    >>> b = [[5, 6], [7, 8]]\n    >>> matrix_multiply(a, b)\n    [[19, 22], [43, 50]]\n\n    Note:\n    The function assumes that the input matrices are valid and have the correct dimensions for matrix multiplication.\n    \"\"\"\n    pass",
+        "bleu": 0.0923,
+        "quality_score": 5,
+        "latency_ms": 28012.8,
+        "memory_mb": 2534.7,
+        "raw_response": "\n    matrix_multiply(a, b)\n\n    Given two matrices a and b, this function returns their product.\n\n    Parameters:\n    a (list of list of int): The first matrix.\n    b (list of list of int): The second matrix.\n\n    Returns:\n    list of list of int: The product of the two matrices.\n\n    Raises:\n    ValueError: If the number of columns in a does not match the number of rows in b.\n\n    Example:\n    >>> a = [[1, 2], [3, 4]]\n    >>> b = [[5, 6], [7, 8]]\n    >>> matrix_multiply(a, b)\n    [[19, 22], [43..."
+      },
+      "groq": {
+        "generated_docstring": "Multiply two matrices a and b and return the result. \nThe input matrices must have compatible dimensions, i.e., the number of columns in a must be equal to the number of rows in b. \nIf the dimensions are incompatible, a ValueError is raised. \nThe function uses the standard matrix multiplication algorithm and returns a new matrix containing the result.",
+        "bleu": 0.1374,
+        "quality_score": 4,
+        "latency_ms": 1062.8,
+        "memory_mb": 0.0,
+        "raw_response": "Multiply two matrices a and b and return the result. \nThe input matrices must have compatible dimensions, i.e., the number of columns in a must be equal to the number of rows in b. \nIf the dimensions are incompatible, a ValueError is raised. \nThe function uses the standard matrix multiplication algorithm and returns a new matrix containing the result."
+      }
+    },
+    {
+      "id": 19,
+      "task": "docstring_generation",
+      "function_name": "",
+      "code": "def count_word_frequency(text):\n    words = text.lower().split()\n    freq = {}\n    for word in words:\n        word = word.strip('.,!?;:')\n        freq[word] = freq.get(word, 0) + 1\n    return freq",
+      "bilora": {
+        "generated_docstring": "Count the frequency of each word in a text.\n\n    :param text: The text to count the words in.\n    :type text: str\n    :return: A dictionary with the words as keys and the frequency as values.\n    :rtype: dict\nDocstring:  Count the frequency of each word in a text.\n\n    :param text: The text to count the words in.\n    :type text: str\n    :return: A dictionary with the words as keys and the frequency as values.\n    :rtype: dict\nDocstring:  Count the frequency of each word in a text.\n\n    :param text: The text to count the words in.\n    :type text: str\n    :return: A dictionary with the words as keys and the frequency as values.\n    :rtype: dict\nDocstring:  Count the frequency of each word in a text.\n\n    :param text: The text to count the words in.\n    :type text: str\n    :return: A dictionary with the words as keys and the frequency as values.\n    :rtype: dict\nDocstring:  Count the frequency of each word in a",
+        "bleu": 0.0479,
+        "quality_score": 4,
+        "latency_ms": 44373.0,
+        "memory_mb": 2471.9,
+        "raw_response": "Count the frequency of each word in a text.\n\n    :param text: The text to count the words in.\n    :type text: str\n    :return: A dictionary with the words as keys and the frequency as values.\n    :rtype: dict\nDocstring:  Count the frequency of each word in a text.\n\n    :param text: The text to count the words in.\n    :type text: str\n    :return: A dictionary with the words as keys and the frequency as values.\n    :rtype: dict\nDocstring:  Count the frequency of each word in a text.\n\n    :param te..."
+      },
+      "base_phi3": {
+        "generated_docstring": "def count_word_frequency(text):\n    \"\"\"\n    Count the frequency of each word in a given text.\n\n    Parameters:\n    text (str): The input text to analyze.\n\n    Returns:\neno (dict): A dictionary with words as keys and their frequencies as values.\n\n    \"\"\"\n    words = text.lower().split()\n    freq = {}\n    for word in words:\n        word = word.strip('.,!?;:')\n        freq[word] = freq.get(word, 0) + 1\n    return freq",
+        "bleu": 0.0802,
+        "quality_score": 4,
+        "latency_ms": 18181.6,
+        "memory_mb": 2471.9,
+        "raw_response": "\n\ndef count_word_frequency(text):\n    \"\"\"\n    Count the frequency of each word in a given text.\n\n    Parameters:\n    text (str): The input text to analyze.\n\n    Returns:\neno (dict): A dictionary with words as keys and their frequencies as values.\n\n    \"\"\"\n    words = text.lower().split()\n    freq = {}\n    for word in words:\n        word = word.strip('.,!?;:')\n        freq[word] = freq.get(word, 0) + 1\n    return freq\n\n"
+      },
+      "groq": {
+        "generated_docstring": "Returns a dictionary where the keys are the unique words in the input text and the values are their corresponding frequencies, with the text converted to lowercase and punctuation removed from each word.",
+        "bleu": 0.0639,
+        "quality_score": 5,
+        "latency_ms": 307.9,
+        "memory_mb": 0.0,
+        "raw_response": "Returns a dictionary where the keys are the unique words in the input text and the values are their corresponding frequencies, with the text converted to lowercase and punctuation removed from each word."
+      }
+    },
+    {
+      "id": 20,
+      "task": "docstring_generation",
+      "function_name": "",
+      "code": "def encode_run_length(s):\n    if not s:\n        return \"\"\n    result = []\n    count = 1\n    for i in range(1, len(s)):\n        if s[i] == s[i-1]:\n            count += 1\n        else:\n            result.append(f\"{s[i-1]}{count}\")\n            count = 1\n    result.append(f\"{s[-1]}{count}\")\n    return ''.join(result)",
+      "bilora": {
+        "generated_docstring": "Encode a string using run-length encoding.\n\n    :param s: The string to encode.\n    :type s: str\n    :return: The encoded string.\n    :rtype: str\nDocstring:  Decode a string using run-length encoding.\n\n    :param s: The string to decode.\n    :type s: str\n    :return: The decoded string.\n    :rtype: str\nDocstring:  Decode a string using run-length encoding.\n\n    :param s: The string to decode.\n    :type s: str\n    :return: The decoded string.\n    :rtype: str\nDocstring:  Decode a string using run-length encoding.\n\n    :param s: The string to decode.\n    :type s: str\n    :return: The decoded string.\n    :rtype: str\nDocstring:  Decode a string using run-length encoding.\n\n    :param s: The string to decode.\n    :type s: str\n    :return: The decoded string.\n    :rtype: str\nDocstring:  Decode",
+        "bleu": 0.0453,
+        "quality_score": 3,
+        "latency_ms": 47789.3,
+        "memory_mb": 2505.3,
+        "raw_response": "Encode a string using run-length encoding.\n\n    :param s: The string to encode.\n    :type s: str\n    :return: The encoded string.\n    :rtype: str\nDocstring:  Decode a string using run-length encoding.\n\n    :param s: The string to decode.\n    :type s: str\n    :return: The decoded string.\n    :rtype: str\nDocstring:  Decode a string using run-length encoding.\n\n    :param s: The string to decode.\n    :type s: str\n    :return: The decoded string.\n    :rtype: str\nDocstring:  Decode a string using run-..."
+      },
+      "base_phi3": {
+        "generated_docstring": "encode_run_length(s)\n\n    Given a string s, return a run-length encoding of the string.\n\n    The run-length encoding of a string is a string where each character\n    is followed by the number of times it appears consecutively in the original\n    string. For example, the run-length encoding of \"aabbbccde\" is \"a2b3c2e1\".\n\n    Parameters:\n    - s (str): The input string to encode.\n\n    Returns:\n    - str: The run-length encoded string.\n\n    Rais0es:\n    - TypeError: If the input is not a string.\n\n    Example:\n    >>> encode_run_length(\"aabbbccde\")\n    'a2b3c2e1'\n\n    >>> encode_run_length(\"\")\n    ''\n\n    >>> encode_run_length(\"a\")\n    'a1'\n\n    >>> encode_run_length(\"abc\")\n    'a1b1c1'\n\n    >>> encode_run_length(\"aabbcc\")\n    'a2",
+        "bleu": 0.0657,
+        "quality_score": 4,
+        "latency_ms": 34437.6,
+        "memory_mb": 2505.4,
+        "raw_response": "\n\n    encode_run_length(s)\n\n    Given a string s, return a run-length encoding of the string.\n\n    The run-length encoding of a string is a string where each character\n    is followed by the number of times it appears consecutively in the original\n    string. For example, the run-length encoding of \"aabbbccde\" is \"a2b3c2e1\".\n\n    Parameters:\n    - s (str): The input string to encode.\n\n    Returns:\n    - str: The run-length encoded string.\n\n    Rais0es:\n    - TypeError: If the input is not a stri..."
+      },
+      "groq": {
+        "generated_docstring": "Encodes a given string using run-length encoding, replacing sequences of repeated characters with the character and the count of its consecutive occurrences.",
+        "bleu": 0.23,
+        "quality_score": 4,
+        "latency_ms": 498.8,
+        "memory_mb": 0.0,
+        "raw_response": "Encodes a given string using run-length encoding, replacing sequences of repeated characters with the character and the count of its consecutive occurrences."
+      }
+    }
+  ]
+}
