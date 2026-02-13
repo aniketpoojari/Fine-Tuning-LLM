@@ -12,6 +12,7 @@ Usage:
     python benchmarking/evaluate.py --verbose                # print raw model outputs
 """
 
+import copy
 import json
 import time
 import argparse
@@ -19,7 +20,6 @@ import math
 import os
 import re
 import sys
-import textwrap
 from collections import Counter
 
 import torch
@@ -262,8 +262,6 @@ def run_test_cases(generated_code, function_name, test_cases):
     passed = 0
     for i, tc in enumerate(test_cases):
         try:
-            # Deep copy input if it's a list/dict to avoid mutation between test cases
-            import copy
             inp = copy.deepcopy(tc["input"])
             result = func(*inp)
             if result == tc["expected"]:
@@ -307,12 +305,13 @@ def load_model_with_adapters(base_model_name, adapter_dir):
     tokenizer.pad_token = tokenizer.unk_token
     tokenizer.padding_side = "right"
 
-    print(f"  Loading base model: {base_model_name} ...")
+    print(f"  Loading base model: {base_model_name} (device={device}) ...")
     model = AutoModelForCausalLM.from_pretrained(
         base_model_name,
         quantization_config=bnb_config,
         device_map="auto" if use_bnb else None,
-        torch_dtype=torch.bfloat16 if use_bnb else torch.float32,
+        torch_dtype=torch.bfloat16 if use_bnb else torch.float16,
+        low_cpu_mem_usage=True,
         use_cache=True,
         trust_remote_code=False,
         attn_implementation="eager"
@@ -518,8 +517,6 @@ def _run_local(model, tokenizer, prompt, adapter_name, loaded_adapters, use_adap
 
     return raw, lat, mem
 
-    return raw, lat, mem
-
 
 def evaluate_codegen(model, tokenizer, groq_client, groq_model, sample, loaded_adapters, only_bilora=False):
     """Evaluate a single code-generation sample across models."""
@@ -685,13 +682,13 @@ def evaluate_docstring(model, tokenizer, groq_client, groq_model, sample, loaded
     return results
 
 
-def _skip_result():
+def _skip_result(reason="SKIPPED (no Groq API key)"):
     return {
         "generated_code": "", "generated_docstring": "",
         "test_passed": 0, "test_total": 0, "pass_rate": 0.0,
         "bleu": 0.0, "quality_score": 0,
         "latency_ms": 0.0, "memory_mb": 0.0,
-        "raw_response": "SKIPPED (no Groq API key)",
+        "raw_response": reason,
     }
 
 
