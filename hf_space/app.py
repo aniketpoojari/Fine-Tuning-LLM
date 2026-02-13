@@ -34,21 +34,52 @@ def load_model():
     model.set_adapter("task_1")
     return model, tokenizer
 
+import datetime
+
 def log_feedback(prompt, response, task, rating):
-    """Save feedback to Hugging Face Dataset"""
+    """Save feedback to a Hugging Face Dataset CSV"""
     try:
-        hf_token = os.environ.get("HF_TOKEN")
+        hf_token = st.secrets.get("HF_TOKEN") or os.environ.get("HF_TOKEN")
         if not hf_token:
+            st.error("HF_TOKEN not found. Feedback not saved.")
             return
         
+        # Create a dictionary for the new entry
+        new_data = {
+            "timestamp": [str(datetime.datetime.now())],
+            "task": [task],
+            "prompt": [prompt],
+            "response": [response],
+            "rating": [rating]
+        }
+        df = pd.DataFrame(new_data)
+        
+        # In a real Space, we append to a CSV in the Dataset repo
+        # Using HfApi to upload/append
         api = HfApi(token=hf_token)
-        # In a real Space, you'd append to a Parquet/CSV file in a Dataset repo
-        # For simplicity in this demo, we'll log to console/state
-        # (Implementing a full Dataset append requires a dedicated feedback repo)
+        csv_data = df.to_csv(index=False, header=False)
+        
+        # Path to feedback file in your dataset repo
+        repo_id = "aniketp2009gmail/bilora-user-feedback"
+        
+        # Create repo if it doesn't exist
+        api.create_repo(repo_id=repo_id, repo_type="dataset", exist_ok=True)
+        
+        # Upload as a new file named by day to prevent massive file conflicts
+        filename = f"feedback_{datetime.date.today()}.csv"
+        
+        # For simplicity in Streamlit, we'll use upload_file. 
+        # In high-traffic apps, you'd use a more robust queue.
+        api.upload_file(
+            path_or_fileobj=csv_data.encode(),
+            path_in_repo=filename,
+            repo_id=repo_id,
+            repo_type="dataset",
+            run_as_future=True
+        )
         st.session_state.feedback_sent = True
-        print(f"FEEDBACK: {task} | Rating: {rating} | Prompt: {prompt[:50]}")
     except Exception as e:
-        print(f"Feedback error: {e}")
+        st.error(f"Feedback error: {e}")
 
 # UI
 st.title("🧠 BiLoRA: Dual-Adapter Code Assistant")
