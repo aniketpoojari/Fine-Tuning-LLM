@@ -521,8 +521,8 @@ def _run_local(model, tokenizer, prompt, adapter_name, loaded_adapters, use_adap
     return raw, lat, mem
 
 
-def evaluate_codegen(model, tokenizer, groq_client, groq_model, sample, loaded_adapters):
-    """Evaluate a single code-generation sample across all three models."""
+def evaluate_codegen(model, tokenizer, groq_client, groq_model, sample, loaded_adapters, only_bilora=False):
+    """Evaluate a single code-generation sample across models."""
     local_prompt = build_local_prompt("code_generation", sample["prompt"])
     fname = sample["function_name"]
     test_cases = sample["test_cases"]
@@ -547,6 +547,11 @@ def evaluate_codegen(model, tokenizer, groq_client, groq_model, sample, loaded_a
         "latency_ms": round(lat, 1), "memory_mb": round(mem, 1),
         "raw_response": raw,
     }
+
+    if only_bilora:
+        results["base_phi3"] = _skip_result("Skipped (--only-bilora)")
+        results["groq"] = _skip_result("Skipped (--only-bilora)")
+        return results
 
     # --- Base Phi-3 ---
     raw, lat, mem = _run_local(
@@ -605,8 +610,8 @@ def evaluate_codegen(model, tokenizer, groq_client, groq_model, sample, loaded_a
     return results
 
 
-def evaluate_docstring(model, tokenizer, groq_client, groq_model, sample, loaded_adapters):
-    """Evaluate a single docstring-generation sample across all three models."""
+def evaluate_docstring(model, tokenizer, groq_client, groq_model, sample, loaded_adapters, only_bilora=False):
+    """Evaluate a single docstring-generation sample across models."""
     local_prompt = build_local_prompt("docstring_generation", sample["code"])
     ref = sample["reference_docstring"]
     results = {}
@@ -626,6 +631,11 @@ def evaluate_docstring(model, tokenizer, groq_client, groq_model, sample, loaded
         "latency_ms": round(lat, 1), "memory_mb": round(mem, 1),
         "raw_response": raw,
     }
+
+    if only_bilora:
+        results["base_phi3"] = _skip_result("Skipped (--only-bilora)")
+        results["groq"] = _skip_result("Skipped (--only-bilora)")
+        return results
 
     # --- Base Phi-3 ---
     raw, lat, mem = _run_local(
@@ -803,6 +813,7 @@ def main():
     parser.add_argument("--groq-model",  default="llama-3.3-70b-versatile")
     parser.add_argument("--output",      default="benchmarking/results.json")
     parser.add_argument("--max-samples", type=int, default=None)
+    parser.add_argument("--only-bilora", action="store_true", help="Only evaluate BiLoRA, skip benchmarking models")
     parser.add_argument("--verbose", "-v", action="store_true",
                         help="Print raw model outputs for debugging")
     args = parser.parse_args()
@@ -849,11 +860,11 @@ def main():
 
         if task == "code_generation":
             res = evaluate_codegen(
-                model, tokenizer, groq_client, args.groq_model, sample, loaded_adapters
+                model, tokenizer, groq_client, args.groq_model, sample, loaded_adapters, only_bilora=args.only_bilora
             )
         else:
             res = evaluate_docstring(
-                model, tokenizer, groq_client, args.groq_model, sample, loaded_adapters
+                model, tokenizer, groq_client, args.groq_model, sample, loaded_adapters, only_bilora=args.only_bilora
             )
 
         entry = {

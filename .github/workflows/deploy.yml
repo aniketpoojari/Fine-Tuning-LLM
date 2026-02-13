@@ -24,7 +24,8 @@ jobs:
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
-          python benchmarking/evaluate.py --max-samples 1 --groq-api-key $GROQ_API_KEY
+          # Use --only-bilora to skip comparative benchmarking and focus on model validation
+          python benchmarking/evaluate.py --max-samples 1 --only-bilora --groq-api-key $GROQ_API_KEY
 
       - name: Check for Regressions
         run: |
