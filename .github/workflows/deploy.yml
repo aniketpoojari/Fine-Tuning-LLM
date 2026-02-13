@@ -1,0 +1,53 @@
+name: Eval and Deploy to HF Spaces
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install groq  # For evaluation judge
+          
+      - name: Run Smoke Test Evaluation
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          # Note: We run with --max-samples 1 because GH Actions RAM is limited (7GB)
+          # This acts as a check that the evaluation script and judge logic still work.
+          python benchmarking/evaluate.py --max-samples 1 --groq-api-key $GROQ_API_KEY
+
+  deploy:
+    needs: evaluate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
+      - name: Push to HF Spaces
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          # We use a python script to sync only the hf_space folder contents to the Space root
+          pip install huggingface_hub
+          python -c "
+          from huggingface_hub import HfApi
+          api = HfApi(token='${{ secrets.HF_TOKEN }}')
+          api.upload_folder(
+              folder_path='hf_space',
+              repo_id='aniketp2009gmail/phi3-bilora-assistant',
+              repo_type='space'
+          )
+          "
