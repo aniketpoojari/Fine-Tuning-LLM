@@ -24,8 +24,8 @@ jobs:
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
-          # Use --max-samples 2 to trigger balanced sampling (picks 1 from each task)
-          python benchmarking/evaluate.py --max-samples 2 --only-bilora --groq-api-key $GROQ_API_KEY
+          # Use --max-samples 1 to pick 1 sample from EACH task (total 2)
+          python benchmarking/evaluate.py --max-samples 1 --only-bilora --groq-api-key $GROQ_API_KEY
 
       - name: Check for Regressions
         run: |
