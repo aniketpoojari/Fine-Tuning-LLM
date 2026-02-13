@@ -349,8 +349,11 @@ def load_model_with_adapters(base_model_name, adapter_dir):
                     adapter_name=adapter_name
                 )
             loaded.append(adapter_name)
+            print(f"  Successfully loaded adapter: {adapter_name}")
         except Exception as e:
-            print(f"  WARNING: Could not load adapter {adapter_name}: {e}")
+            print(f"  ERROR: Could not load adapter {adapter_name}: {e}")
+            # If the first load fails, we don't want to convert to PeftModel or first remains True
+            # We continue to the next one
 
     if loaded:
         model.set_adapter(loaded[0])
@@ -481,31 +484,39 @@ def judge_quality(client, groq_model, prompt_text):
 
 def _run_local(model, tokenizer, prompt, adapter_name, loaded_adapters, use_adapter):
     """Run a single local inference with adapter toggling."""
-    is_peft = hasattr(model, "set_adapter")
+    # Check if this is a PEFT model and has active adapters
+    is_peft = hasattr(model, "set_adapter") and hasattr(model, "peft_config") and len(model.peft_config) > 0
 
     if is_peft:
-        if use_adapter and adapter_name in loaded_adapters:
-            # Re-enable adapters if they were disabled and set the correct one
-            if hasattr(model, "enable_adapters"):
-                model.enable_adapters()
-            model.set_adapter(adapter_name)
-        else:
-            # Disable adapters to test base model
-            if hasattr(model, "disable_adapters"):
-                model.disable_adapters()
+        try:
+            if use_adapter and adapter_name in loaded_adapters:
+                if hasattr(model, "enable_adapters"):
+                    model.enable_adapters()
+                model.set_adapter(adapter_name)
             else:
-                # Fallback if neither is available (though rare)
-                pass
+                if hasattr(model, "disable_adapters"):
+                    model.disable_adapters()
+        except Exception as e:
+            if VERBOSE:
+                print(f"  WARNING: Adapter toggling failed: {e}")
+            pass
 
     try:
         raw, lat, mem = generate_local(model, tokenizer, prompt)
     except Exception as e:
         raw, lat, mem = f"ERROR: {e}", 0.0, 0.0
 
-    # Always restore adapter state
+    # Always restore adapter state if we were testing base
     if is_peft and not use_adapter:
-        if hasattr(model, "enable_adapters"):
-            model.enable_adapters()
+        try:
+            if hasattr(model, "enable_adapters"):
+                model.enable_adapters()
+            if loaded_adapters:
+                model.set_adapter(loaded_adapters[0])
+        except:
+            pass
+
+    return raw, lat, mem
 
     return raw, lat, mem
 
