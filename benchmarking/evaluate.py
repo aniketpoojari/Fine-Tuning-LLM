@@ -288,12 +288,11 @@ def get_device():
 def load_model_with_adapters(base_model_name, adapter_dir):
     """
     Load Phi-3 with both LoRA adapters.
-      model.set_adapter("task_1" / "task_2")  — switch adapter
-      model.disable_adapter_layers()           — bare base model
-      model.enable_adapter_layers()            — re-enable
+    Tries local paths first, falls back to Hugging Face Hub.
     """
     device = get_device()
     use_bnb = device == "cuda"
+    hub_repo = "aniketp2009gmail/phi3-bilora-code-review"
 
     bnb_config = None
     if use_bnb:
@@ -315,6 +314,7 @@ def load_model_with_adapters(base_model_name, adapter_dir):
         device_map="auto" if use_bnb else None,
         torch_dtype=torch.bfloat16 if use_bnb else torch.float32,
         use_cache=True,
+        trust_remote_code=True
     )
     if not use_bnb:
         model = model.to(device)
@@ -322,19 +322,34 @@ def load_model_with_adapters(base_model_name, adapter_dir):
     loaded = []
     first = True
     for adapter_name in ["task_1", "task_2"]:
-        path = os.path.join(adapter_dir, adapter_name)
-        if not os.path.exists(path):
-            print(f"  WARNING: adapter '{path}' not found, skipping.")
-            continue
-        if first:
-            model = PeftModel.from_pretrained(
-                model, path, adapter_name=adapter_name, is_trainable=False
-            )
-            first = False
+        local_path = os.path.join(adapter_dir, adapter_name)
+        
+        # Determine source (Local vs Hub)
+        if os.path.exists(local_path) and os.path.exists(os.path.join(local_path, "adapter_config.json")):
+            load_path = local_path
+            print(f"  Loading adapter '{adapter_name}' from LOCAL")
         else:
-            model.load_adapter(path, adapter_name=adapter_name)
-        loaded.append(adapter_name)
-        print(f"  Loaded adapter: {adapter_name}")
+            load_path = hub_repo
+            print(f"  Loading adapter '{adapter_name}' from HUB ({hub_repo})")
+
+        try:
+            if first:
+                model = PeftModel.from_pretrained(
+                    model, load_path, 
+                    subfolder=adapter_name if load_path == hub_repo else None,
+                    adapter_name=adapter_name, 
+                    is_trainable=False
+                )
+                first = False
+            else:
+                model.load_adapter(
+                    load_path, 
+                    subfolder=adapter_name if load_path == hub_repo else None,
+                    adapter_name=adapter_name
+                )
+            loaded.append(adapter_name)
+        except Exception as e:
+            print(f"  WARNING: Could not load adapter {adapter_name}: {e}")
 
     if loaded:
         model.set_adapter(loaded[0])
