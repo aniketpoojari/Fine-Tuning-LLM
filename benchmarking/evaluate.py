@@ -823,8 +823,19 @@ def main():
     print(f"\n[1/4] Loading dataset: {args.dataset}")
     with open(args.dataset) as f:
         dataset = json.load(f)
+    
     if args.max_samples:
-        dataset = dataset[: args.max_samples]
+        # Balanced sampling: try to pick samples from each task
+        cg_all = [s for s in dataset if s["task"] == "code_generation"]
+        dg_all = [s for s in dataset if s["task"] == "docstring_generation"]
+        
+        if len(cg_all) > 0 and len(dg_all) > 0 and args.max_samples >= 2:
+            # Pick roughly equal amounts from each, total = max_samples
+            n_cg = args.max_samples // 2
+            n_dg = args.max_samples - n_cg
+            dataset = cg_all[:n_cg] + dg_all[:n_dg]
+        else:
+            dataset = dataset[: args.max_samples]
 
     cg = [s for s in dataset if s["task"] == "code_generation"]
     dg = [s for s in dataset if s["task"] == "docstring_generation"]
