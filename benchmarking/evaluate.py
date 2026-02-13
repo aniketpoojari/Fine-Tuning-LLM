@@ -469,10 +469,17 @@ def _run_local(model, tokenizer, prompt, adapter_name, loaded_adapters, use_adap
 
     if is_peft:
         if use_adapter and adapter_name in loaded_adapters:
-            model.enable_adapter_layers()
+            # Re-enable adapters if they were disabled and set the correct one
+            if hasattr(model, "enable_adapters"):
+                model.enable_adapters()
             model.set_adapter(adapter_name)
         else:
-            model.disable_adapter_layers()
+            # Disable adapters to test base model
+            if hasattr(model, "disable_adapters"):
+                model.disable_adapters()
+            else:
+                # Fallback if neither is available (though rare)
+                pass
 
     try:
         raw, lat, mem = generate_local(model, tokenizer, prompt)
@@ -481,7 +488,8 @@ def _run_local(model, tokenizer, prompt, adapter_name, loaded_adapters, use_adap
 
     # Always restore adapter state
     if is_peft and not use_adapter:
-        model.enable_adapter_layers()
+        if hasattr(model, "enable_adapters"):
+            model.enable_adapters()
 
     return raw, lat, mem
 
