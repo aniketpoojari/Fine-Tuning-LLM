@@ -1,11 +1,12 @@
+import datetime
+import os
+
 import streamlit as st
 import torch
-import os
-import time
 import pandas as pd
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel
-from huggingface_hub import HfApi, Table
+from huggingface_hub import HfApi
 
 # CONFIGURATION
 BASE_MODEL = "microsoft/Phi-3-mini-4k-instruct"
@@ -35,7 +36,6 @@ def load_model():
     model.set_adapter("task_1")
     return model, tokenizer
 
-import datetime
 
 def log_feedback(prompt, response, task, rating):
     """Save feedback to a Hugging Face Dataset CSV"""
@@ -123,7 +123,7 @@ try:
         
         st.write("---")
         st.write("Help improve BiLoRA! Was this helpful?")
-        col1, col2 = st.columns(5)
+        col1, col2 = st.columns(2)
         with col1:
             if st.button("👍 Yes"):
                 log_feedback(st.session_state.last_prompt, st.session_state.last_response, st.session_state.last_task, 1)
