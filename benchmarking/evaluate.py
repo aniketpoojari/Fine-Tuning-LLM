@@ -314,7 +314,8 @@ def load_model_with_adapters(base_model_name, adapter_dir):
         device_map="auto" if use_bnb else None,
         torch_dtype=torch.bfloat16 if use_bnb else torch.float32,
         use_cache=True,
-        trust_remote_code=True
+        trust_remote_code=False,
+        attn_implementation="eager"
     )
     if not use_bnb:
         model = model.to(device)

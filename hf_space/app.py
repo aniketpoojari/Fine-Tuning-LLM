@@ -26,7 +26,8 @@ def load_model():
         BASE_MODEL,
         torch_dtype=torch.float16,
         low_cpu_mem_usage=True,
-        trust_remote_code=True
+        trust_remote_code=False,
+        attn_implementation="eager"
     )
     
     model = PeftModel.from_pretrained(model, ADAPTER_REPO, subfolder="task_1", adapter_name="task_1")

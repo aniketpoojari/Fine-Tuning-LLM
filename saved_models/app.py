@@ -52,7 +52,8 @@ def load_model_with_adapters():
         quantization_config=bnb_config,
         device_map="auto",
         torch_dtype=torch.bfloat16,
-        trust_remote_code=True,
+        trust_remote_code=False,
+        attn_implementation="eager",
         use_cache=False,
     )
     
