@@ -68,3 +68,11 @@ stages:
       - training.task_2_target_modules
     outs:
       - training_completion_time.txt
+
+  push-adapters:
+    cmd: python src/push_adapters.py --config params.yaml
+    deps:
+      - src/push_adapters.py
+      - training_completion_time.txt
+    params:
+      - training.base_model
