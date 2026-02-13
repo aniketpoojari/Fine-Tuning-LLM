@@ -24,9 +24,11 @@ jobs:
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
-          # Note: We run with --max-samples 1 because GH Actions RAM is limited (7GB)
-          # This acts as a check that the evaluation script and judge logic still work.
           python benchmarking/evaluate.py --max-samples 1 --groq-api-key $GROQ_API_KEY
+
+      - name: Check for Regressions
+        run: |
+          python scripts/compare_metrics.py benchmarking/results.json benchmarking/baseline.json
 
   deploy:
     needs: evaluate

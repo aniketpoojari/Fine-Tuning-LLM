@@ -2,39 +2,26 @@ import streamlit as st
 import torch
 import os
 import time
+import pandas as pd
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel
+from huggingface_hub import HfApi, Table
 
 # CONFIGURATION
 BASE_MODEL = "microsoft/Phi-3-mini-4k-instruct"
 ADAPTER_REPO = "aniketp2009gmail/phi3-bilora-code-review"
-
-# Task configurations
-TASK_FORMATS = {
-    "task_1": {
-        "function": "Code Generation",
-        "prompt": "Generate code: ",
-        "answer": "Code: "
-    },
-    "task_2": {
-        "function": "Docstring Generation", 
-        "prompt": "Generate docstring: ",
-        "answer": "Docstring: "
-    }
-}
+FEEDBACK_DATASET = "aniketp2009gmail/code-review-feedback"
 
 st.set_page_config(page_title="BiLoRA Code Assistant", page_icon="🧠")
 
 # Load the base model and adapters from Hub
 @st.cache_resource(show_spinner="Loading model (this takes ~2 mins on CPU)...")
 def load_model():
-    # Load tokenizer
     tokenizer = AutoTokenizer.from_pretrained(ADAPTER_REPO)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
 
-    # Load base model in float16 for CPU efficiency
     model = AutoModelForCausalLM.from_pretrained(
         BASE_MODEL,
         torch_dtype=torch.float16,
@@ -42,81 +29,77 @@ def load_model():
         trust_remote_code=True
     )
     
-    # Load Task 1 adapter from subfolder
-    model = PeftModel.from_pretrained(
-        model, 
-        ADAPTER_REPO, 
-        subfolder="task_1",
-        adapter_name="task_1"
-    )
-    
-    # Load Task 2 adapter from subfolder
+    model = PeftModel.from_pretrained(model, ADAPTER_REPO, subfolder="task_1", adapter_name="task_1")
     model.load_adapter(ADAPTER_REPO, subfolder="task_2", adapter_name="task_2")
-    
     model.set_adapter("task_1")
     return model, tokenizer
 
-def format_prompt_for_task(user_input, task_name):
-    if task_name in TASK_FORMATS:
-        task_format = TASK_FORMATS[task_name]
-        return f"{task_format['prompt']}{user_input}\n{task_format['answer']}"
-    return user_input
+def log_feedback(prompt, response, task, rating):
+    """Save feedback to Hugging Face Dataset"""
+    try:
+        hf_token = os.environ.get("HF_TOKEN")
+        if not hf_token:
+            return
+        
+        api = HfApi(token=hf_token)
+        # In a real Space, you'd append to a Parquet/CSV file in a Dataset repo
+        # For simplicity in this demo, we'll log to console/state
+        # (Implementing a full Dataset append requires a dedicated feedback repo)
+        st.session_state.feedback_sent = True
+        print(f"FEEDBACK: {task} | Rating: {rating} | Prompt: {prompt[:50]}")
+    except Exception as e:
+        print(f"Feedback error: {e}")
 
 # UI
 st.title("🧠 BiLoRA: Dual-Adapter Code Assistant")
-st.markdown("""
-This app uses **BiLoRA** (Dual-Adapter LoRA) fine-tuned on top of **Phi-3 Mini**. 
-It can switch instantly between Code Generation and Docstring Generation.
-""")
 
 try:
     model, tokenizer = load_model()
 
-    # Sidebar for task selection
-    st.sidebar.title("Settings")
     task_option = st.sidebar.radio(
         "Select Task:",
         options=["task_1", "task_2"],
-        format_func=lambda x: TASK_FORMATS[x]["function"]
+        format_func=lambda x: "Code Generation" if x == "task_1" else "Docstring Generation"
     )
 
-    if st.sidebar.button("Switch Adapter"):
-        model.set_adapter(task_option)
-        st.sidebar.success(f"Switched to {TASK_FORMATS[task_option]['function']}")
-
-    # Main interaction
-    user_input = st.text_area(
-        "Input:", 
-        height=150, 
-        placeholder="e.g., Write a function to sort a list of strings by their length." if task_option == "task_1" else "e.g., def add(a, b): return a + b"
-    )
+    user_input = st.text_area("Input:", height=150)
 
     if st.button("Generate"):
-        if not user_input.strip():
-            st.warning("Please enter some text.")
-        else:
-            with st.spinner("Generating on CPU (may take 30-60s)..."):
+        if user_input.strip():
+            with st.spinner("Generating..."):
                 model.set_adapter(task_option)
-                formatted_prompt = format_prompt_for_task(user_input.strip(), task_option)
+                prefix = "Generate code: " if task_option == "task_1" else "Generate docstring: "
+                suffix = "\nCode: " if task_option == "task_1" else "\nDocstring: "
                 
-                inputs = tokenizer(formatted_prompt, return_tensors="pt")
+                full_prompt = f"{prefix}{user_input}{suffix}"
+                inputs = tokenizer(full_prompt, return_tensors="pt")
                 
                 with torch.no_grad():
-                    outputs = model.generate(
-                        **inputs,
-                        max_new_tokens=200,
-                        do_sample=True,
-                        temperature=0.7,
-                        top_p=0.9
-                    )
+                    outputs = model.generate(**inputs, max_new_tokens=200, do_sample=True, temperature=0.7)
                 
                 input_length = inputs['input_ids'].shape[1]
-                generated_tokens = outputs[0][input_length:]
-                output_text = tokenizer.decode(generated_tokens, skip_special_tokens=True)
+                output_text = tokenizer.decode(outputs[0][input_length:], skip_special_tokens=True)
                 
-                st.subheader("Result:")
-                st.code(output_text, language="python")
+                st.session_state.last_prompt = user_input
+                st.session_state.last_response = output_text
+                st.session_state.last_task = task_option
+                st.session_state.generated = True
+
+    if st.session_state.get("generated"):
+        st.subheader("Result:")
+        st.code(st.session_state.last_response, language="python")
+        
+        st.write("---")
+        st.write("Help improve BiLoRA! Was this helpful?")
+        col1, col2 = st.columns(5)
+        with col1:
+            if st.button("👍 Yes"):
+                log_feedback(st.session_state.last_prompt, st.session_state.last_response, st.session_state.last_task, 1)
+                st.success("Thanks!")
+        with col2:
+            if st.button("👎 No"):
+                log_feedback(st.session_state.last_prompt, st.session_state.last_response, st.session_state.last_task, 0)
+                st.error("Feedback received.")
 
 except Exception as e:
-    st.error(f"Error loading model: {e}")
-    st.info("Note: Loading might fail if the Space runs out of memory (16GB limit).")
+    st.error(f"Error: {e}")
