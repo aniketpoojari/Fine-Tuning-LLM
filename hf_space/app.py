@@ -52,21 +52,33 @@ def log_feedback(prompt, response, task, rating):
             st.warning("HF_TOKEN not configured. Feedback not saved.")
             return
 
-        new_data = {
-            "timestamp": [str(datetime.datetime.now())],
-            "task": [task],
-            "prompt": [prompt],
-            "response": [response],
-            "rating": [rating]
-        }
-        df = pd.DataFrame(new_data)
-
         api = HfApi(token=hf_token)
-        csv_data = df.to_csv(index=False, header=False)
-
         api.create_repo(repo_id=FEEDBACK_REPO, repo_type="dataset", exist_ok=True)
 
+        now = datetime.datetime.now()
+        new_row = pd.DataFrame([{
+            "timestamp": str(now),
+            "task": task,
+            "prompt": prompt,
+            "response": response,
+            "rating": rating
+        }])
+
+        # One file per day — download existing, append, re-upload
         filename = f"feedback_{datetime.date.today()}.csv"
+        try:
+            existing_path = api.hf_hub_download(
+                repo_id=FEEDBACK_REPO,
+                filename=filename,
+                repo_type="dataset",
+                token=hf_token,
+            )
+            existing_df = pd.read_csv(existing_path)
+            combined = pd.concat([existing_df, new_row], ignore_index=True)
+        except Exception:
+            combined = new_row
+
+        csv_data = combined.to_csv(index=False)
         api.upload_file(
             path_or_fileobj=csv_data.encode(),
             path_in_repo=filename,

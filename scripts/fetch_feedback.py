@@ -47,16 +47,18 @@ def fetch_feedback():
             token=token,
         )
         with open(path, "r") as f:
-            reader = csv.reader(f)
+            reader = csv.DictReader(f)
             for row in reader:
-                if len(row) >= 5:
+                try:
                     all_rows.append({
-                        "timestamp": row[0],
-                        "task": row[1],
-                        "prompt": row[2],
-                        "response": row[3],
-                        "rating": int(row[4]),
+                        "timestamp": row["timestamp"],
+                        "task": row["task"],
+                        "prompt": row["prompt"],
+                        "response": row["response"],
+                        "rating": int(row["rating"]),
                     })
+                except (KeyError, ValueError):
+                    continue
 
     if not all_rows:
         print("No feedback entries found in files.")
