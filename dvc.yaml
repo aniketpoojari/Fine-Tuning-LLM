@@ -66,13 +66,39 @@ stages:
       - training.base_model
       - training.task_1_target_modules
       - training.task_2_target_modules
+      - training.learning_rate
+      - training.num_epochs
+      - training.batch_size
+      - training.gradient_accumulation_steps
+      - training.lora_r
+      - training.lora_alpha
+      - training.lora_dropout
     outs:
       - training_completion_time.txt
+    metrics:
+      - training_metrics.json:
+          cache: false
+
+  benchmark:
+    cmd: >-
+      python benchmarking/evaluate.py --groq-api-key "$GROQ_API_KEY"
+      && python scripts/compare_metrics.py benchmarking/results.json benchmarking/baseline.json
+    deps:
+      - benchmarking/evaluate.py
+      - benchmarking/eval_dataset.json
+      - benchmarking/baseline.json
+      - scripts/compare_metrics.py
+      - training_completion_time.txt
+    params:
+      - training.base_model
+    metrics:
+      - benchmarking/results.json:
+          cache: false
 
   push-adapters:
     cmd: python src/push_adapters.py --config params.yaml
     deps:
       - src/push_adapters.py
-      - training_completion_time.txt
+      - benchmarking/results.json
     params:
       - training.base_model

@@ -17,3 +17,10 @@ training:
   base_model: microsoft/Phi-3-mini-4k-instruct
   task_1_target_modules: qkv_proj,o_proj
   task_2_target_modules: gate_up_proj,down_proj
+  learning_rate: 2e-4
+  num_epochs: 1
+  batch_size: 1
+  gradient_accumulation_steps: 16
+  lora_r: 4
+  lora_alpha: 8
+  lora_dropout: 0.1

@@ -1,4 +1,4 @@
-name: Eval and Deploy to HF Spaces
+name: Smoke Test and Deploy to HF Spaces
 
 on:
   push:
@@ -20,11 +20,12 @@ jobs:
           pip install torch --index-url https://download.pytorch.org/whl/cpu
           pip install transformers peft datasets accelerate psutil groq
 
-      - name: Run Smoke Test Evaluation
+      - name: Run Smoke Test
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
-          # Use --max-samples 1 to pick 1 sample from EACH task (total 2)
+          # Full evaluation already ran locally via DVC before push.
+          # This is a lightweight sanity check (1 sample per task, BiLoRA only).
           python benchmarking/evaluate.py --max-samples 1 --only-bilora --groq-api-key "$GROQ_API_KEY"
 
       - name: Check for Regressions

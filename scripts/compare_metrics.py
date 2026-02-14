@@ -1,4 +1,5 @@
 import json
+import shutil
 import sys
 import os
 
@@ -40,4 +41,10 @@ if __name__ == "__main__":
 
     if not compare_metrics(new_results, baseline):
         sys.exit(1)
+
     print("Quality check passed!")
+
+    # Promote current results to new baseline
+    if os.path.abspath(new_results) != os.path.abspath(baseline):
+        shutil.copy2(new_results, baseline)
+        print(f"Baseline updated: {baseline}")
