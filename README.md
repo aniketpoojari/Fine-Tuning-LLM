@@ -1,20 +1,23 @@
 # BiLoRA: Dual Adapter Fine-Tuning for Code Generation & Docstring Generation
 
-Multi-task fine-tuning system using LoRA adapters on Microsoft Phi-3-mini-4k-instruct. Two specialized adapters — one for code generation, one for docstring generation — share the same base model and can be switched at inference time without reloading.
+[![HuggingFace Space](https://img.shields.io/badge/HuggingFace-Space-orange)](https://huggingface.co/spaces/aniketp2009gmail/phi3-bilora-assistant)
+
+This project demonstrates how to fine-tune a single LLM (Microsoft Phi-3-mini) for multiple specialized tasks without duplicating the base model. By using dual LoRA adapters—one targeting attention layers for code generation, and another targeting MLP layers for docstring generation—the model can seamlessly switch contexts at inference time.
+
+**🚀 Try it live on Hugging Face Spaces: [BiLoRA AI Assistant](https://huggingface.co/spaces/aniketp2009gmail/phi3-bilora-assistant)**
 
 ## Features
 
-- **Dual LoRA Adapters**: Task-specific adapters targeting different model layers (attention vs MLP)
-- **DVC Pipeline**: Reproducible end-to-end pipeline from data download to adapter deployment
-- **Experiment Tracking**: Hyperparameters, training loss, git hash, and duration logged per run
-- **Automated Benchmarking**: Quality gate that blocks deployment if metrics regress
-- **CI/CD**: GitHub Actions smoke test + auto-deploy to HF Spaces
-- **Human-in-the-Loop Feedback**: User ratings collected in production, downloadable for retraining
+- **Dual LoRA Adapters**: Task-specific adapters targeting different model layers.
+- **DVC Pipeline**: Reproducible end-to-end pipeline from data download to adapter deployment.
+- **Experiment Tracking**: Hyperparameters, training loss, git hash, and duration logged per run.
+- **Automated Benchmarking**: Quality gate that blocks deployment if metrics regress.
+- **CI/CD**: GitHub Actions smoke test + auto-deploy to HF Spaces.
+- **Human-in-the-Loop Feedback**: User ratings collected in production, downloadable for retraining.
 
 ## Hugging Face Hub
 
 - **Model + Adapters**: [aniketp2009gmail/phi3-bilora-code-review](https://huggingface.co/aniketp2009gmail/phi3-bilora-code-review)
-- **Live Demo**: [aniketp2009gmail/phi3-bilora-assistant](https://huggingface.co/spaces/aniketp2009gmail/phi3-bilora-assistant)
 - **User Feedback Dataset**: [aniketp2009gmail/bilora-user-feedback](https://huggingface.co/datasets/aniketp2009gmail/bilora-user-feedback)
 
 ## Benchmark Results
