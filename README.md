@@ -1,5 +1,11 @@
 # BiLoRA: Dual Adapter Fine-Tuning for Code Generation & Docstring Generation
 
+![Python](https://img.shields.io/badge/python-3670AD?style=for-the-badge&logo=python&logoColor=ffdd54)
+![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)
+![DVC](https://img.shields.io/badge/dvc-945DD6?style=for-the-badge&logo=dvc&logoColor=white)
+![MLflow](https://img.shields.io/badge/mlflow-%23d3d3d3.svg?style=for-the-badge&logo=mlflow&logoColor=blue)
+![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow?style=for-the-badge)
+
 [![HuggingFace Space](https://img.shields.io/badge/HuggingFace-Space-orange)](https://huggingface.co/spaces/aniketp2009gmail/phi3-bilora-assistant)
 
 This project demonstrates how to fine-tune a single LLM (Microsoft Phi-3-mini) for multiple specialized tasks without duplicating the base model. By using dual LoRA adapters—one targeting attention layers for code generation, and another targeting MLP layers for docstring generation—the model can seamlessly switch contexts at inference time.
